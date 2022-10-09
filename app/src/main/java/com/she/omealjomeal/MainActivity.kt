@@ -2,14 +2,27 @@ package com.she.omealjomeal
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.result.ActivityResultLauncher
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.she.omealjomeal.databinding.ActivityMainBinding
 
 // 1. 소리 목록
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var storagePermission: ActivityResultLauncher<String>      // 외부저장소 권한 런처
+    val storage = Firebase.storage("gs://omzm-84564.appspot.com")   //
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //firebase realtime database test
+//        val database = Firebase.database
+//        val myRef = database.getReference("message")
+//        myRef.setValue("Hello, Firebase!")
 
         val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
@@ -22,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this) // 레이아웃 매니저: 리사이클러뷰를 화면에 보여주는 형태 결정
     }
 
-    // 테스트용. Sound 클래스에 title, restaurantName만 있음
+    // 테스트용. Sound 클래스에 title, restaurantName만 있음 -> 원래 여기서 직접 추가하는 게 아니라 파이어베이스에서 불러와서 띄워야 함.
     fun loadData(): MutableList<Sound> {
         val data: MutableList<Sound> = mutableListOf()
 

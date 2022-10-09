@@ -7,7 +7,7 @@
     tools:context=".AlbumFragment">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageAlbum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -28,7 +28,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/textUser"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/imageAlbum"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -41,6 +41,6 @@
         android:text="made by User"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/imageAlbum"
         app:layout_constraintTop_toBottomOf="@+id/textListTitle" />
 </androidx.constraintlayout.widget.ConstraintLayout>
