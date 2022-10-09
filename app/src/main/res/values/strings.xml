@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">O Meal Jo Meal</string>
+    <string name="title_activity_senti_map">sentiMap</string>
+    <string name="title_activity_google_maps">GoogleMaps</string>
 </resources>
