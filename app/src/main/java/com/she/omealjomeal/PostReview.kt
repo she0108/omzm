@@ -20,7 +20,7 @@ class PostReview : AppCompatActivity() {
     val storage = Firebase.storage("gs://omzm-84564.appspot.com")   // 버킷(스토리지 주소)에 연결 (storage)
 
     val database = Firebase.database("https://omzm-84564-default-rtdb.asia-southeast1.firebasedatabase.app/")   // (realtime database)
-    val myRef = database.getReference("sounds")
+    val soundRef = database.getReference("sounds")      // 최상위노드 "sounds"에 연결
 
     val binding by lazy { ActivityPostReviewBinding.inflate(layoutInflater) }
 
@@ -42,9 +42,9 @@ class PostReview : AppCompatActivity() {
                 uploadImage(saveThings.imageURI)    // 저장해둔 이미지 URI
                 val imagePath = saveThings.imageFullpath
 
-                // Sound() 만들기 전에 글자수 확인하는 코드 필요할 듯?
+                // Sound() 만들기 전에 글자수 확인하는 코드 필요할 듯? -> value.isNotEmpty() 함수 이용
                 val sound = Sound(title, restaurantName, userName, review, imagePath)
-                addItem(sound)
+                addItem(sound)      // firebase에 sound 정보 업로드
 
                 // 업로드 후 액티비티 종료
             }
@@ -54,6 +54,7 @@ class PostReview : AppCompatActivity() {
         binding.btnSelectImage.setOnClickListener {
             permissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
         }
+        // 갤러리에서 사진 선택 말고 카메라 열어서 사진 찍고 바로 올리는 기능 추가해야 함
     }
 
     object saveThings {
@@ -63,9 +64,9 @@ class PostReview : AppCompatActivity() {
 
     // Sound 데이터를 노드에 입력하는 함수 (realtime database)
     fun addItem(sound: Sound) {
-        val id = myRef.push().key!!
+        val id = soundRef.push().key!!
         sound.id = id
-        myRef.child(id).setValue(sound)
+        soundRef.child(id).setValue(sound)
     }
 
     // 외부저장소 권한 요청 팝업 띄우고 갤러리 여는 함수 (storage - image)

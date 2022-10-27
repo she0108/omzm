@@ -11,7 +11,7 @@ class Sound {
     var userName: String? = ""
     var review: String? = ""
     var imagePath: String? = ""
-    var soundPath: String? = ""
+    var audioPath: String? = ""
     var duration: Long? = null
 
     constructor()

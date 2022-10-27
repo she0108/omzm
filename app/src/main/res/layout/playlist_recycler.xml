@@ -2,12 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/soundLayout"
+    android:id="@+id/playlistLayout"
     android:layout_width="match_parent"
-    android:layout_height="80dp">
+    android:layout_height="110dp">
 
     <ImageView
-        android:id="@+id/imageSound"
+        android:id="@+id/imagePlaylist"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
@@ -20,42 +20,26 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/textTitle2"
+        android:id="@+id/textTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         android:ellipsize="end"
-        android:maxLines="1"
-        android:text="소리 제목"
+        android:maxLines="2"
+        android:text="소리 제목을 여기에 입력하세요 그러시면 됩니다 조금만 더 길게 써볼까요?"
+        android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/textRestaurant"
-        app:layout_constraintEnd_toStartOf="@+id/btnPlay2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnPlay"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/imageSound"
+        app:layout_constraintStart_toEndOf="@+id/imagePlaylist"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textRestaurant"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:text="가게 이름"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnPlay2"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/imageSound"
-        app:layout_constraintTop_toBottomOf="@+id/textTitle2"
-        app:layout_constraintVertical_bias="0.423" />
-
     <ImageButton
-        android:id="@+id/btnPlay2"
+        android:id="@+id/btnPlay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
