@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "662729224696",
+    "firebase_url": "https://omzm-84564-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "omzm-84564",
+    "storage_bucket": "omzm-84564.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:662729224696:android:869ea985f68ce9a797260d",
+        "android_client_info": {
+          "package_name": "com.she.omealjomeal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "662729224696-uhhdqsb3r16lp2haophe9bigd8d7r4js.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDW7Lxtadowj7L-ujcJa-H_ML3uIfhf8A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "662729224696-uhhdqsb3r16lp2haophe9bigd8d7r4js.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
