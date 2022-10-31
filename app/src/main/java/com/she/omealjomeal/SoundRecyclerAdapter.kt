@@ -18,7 +18,6 @@ import com.she.omealjomeal.databinding.SoundRecyclerBinding
 import kotlinx.android.synthetic.main.sound_recycler.view.*
 
 class SoundRecyclerAdapter: RecyclerView.Adapter<SoundRecyclerHolder>() {
-
     var listSoundID = mutableListOf<String>()
 
     // 화면에 보이는 아이템 레이아웃의 바인딩을 생성하는 역할

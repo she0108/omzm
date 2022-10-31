@@ -4,6 +4,7 @@ plugins {
     id 'com.google.gms.google-services'     // firebase 연동
     id 'kotlin-android'                     // Parcelize 사용
     id 'kotlin-android-extensions'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'    // map
 }
 
 android {
@@ -59,4 +60,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage-ktx'       // storage
     implementation 'com.firebaseui:firebase-ui-storage:7.2.0'       // storage에서 파일 다운로드
     implementation 'com.github.bumptech.glide:glide:4.12.0'         // Glide?
+
+    //map
+    implementation 'com.google.android.gms:play-services-maps:18.0.2'
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+
 }

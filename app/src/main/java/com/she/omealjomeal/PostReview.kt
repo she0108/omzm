@@ -32,18 +32,22 @@ class PostReview : AppCompatActivity() {
         with(binding) {
             btnPostReview.setOnClickListener {
 
+                var sound = Sound()
+
                 // 입력한 텍스트
-                val title = editTitle.text.toString()
-                val restaurantName = editRestaurantName.text.toString()
-                val userName = editUserName.text.toString()
-                val review = editReview.text.toString()
+                sound.title = editTitle.text.toString()
+                sound.restaurantName = editRestaurantName.text.toString()
+                sound.userName = editUserName.text.toString()
+                sound.review = editReview.text.toString()
 
                 // 이미지
                 uploadImage(saveThings.imageURI)    // 저장해둔 이미지 URI
-                val imagePath = saveThings.imageFullpath
+                sound.imagePath = saveThings.imageFullpath
+
+                //음성파일
+                //
 
                 // Sound() 만들기 전에 글자수 확인하는 코드 필요할 듯? -> value.isNotEmpty() 함수 이용
-                val sound = Sound(title, restaurantName, userName, review, imagePath)
                 addItem(sound)      // firebase에 sound 정보 업로드
 
                 // 업로드 후 액티비티 종료
@@ -52,9 +56,14 @@ class PostReview : AppCompatActivity() {
 
         // 버튼 클릭 > 권한 요청 > 갤러리 오픈
         binding.btnSelectImage.setOnClickListener {
-            permissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+            permissionLauncher_gallery.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
         }
         // 갤러리에서 사진 선택 말고 카메라 열어서 사진 찍고 바로 올리는 기능 추가해야 함
+
+        // 녹음 버튼 클릭 -> 녹음 시작. 한번 더 누르면 녹음 종료 후 녹음파일 & 파일 경로 저장.
+        binding.btnRecord.setOnClickListener {
+
+        }
     }
 
     object saveThings {
@@ -70,7 +79,7 @@ class PostReview : AppCompatActivity() {
     }
 
     // 외부저장소 권한 요청 팝업 띄우고 갤러리 여는 함수 (storage - image)
-    val permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+    val permissionLauncher_gallery = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
         if (isGranted) {
             galleryLauncher.launch("image/*")
         } else {
