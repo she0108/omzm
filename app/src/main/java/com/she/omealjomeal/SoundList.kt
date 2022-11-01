@@ -9,6 +9,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.she.omealjomeal.databinding.ActivitySoundListBinding
+import java.nio.file.attribute.UserPrincipalNotFoundException
 
 
 // 1. 소리 목록
@@ -41,12 +42,29 @@ class SoundList : AppCompatActivity() {
         var adapter = SoundRecyclerAdapter()
         Log.d(TAG2, "SoundRecyclerAdapter instance 생성 -> var adapter")
         adapter.listSoundID = data    // 어댑터의 listSound에 방금 불러온 data
-        Log.d(TAG2, "adapter.listSoundID에 data에 담긴 soundIdList 저장")     // 여기까지 OK
+        Log.d(TAG2, "adapter.listSoundID에 data에 담긴 soundIdList 저장")
         binding.soundRecyclerView.adapter = adapter
         Log.d(TAG2, "binding.soundRecyclerView.adapter = adapter")
         binding.soundRecyclerView.layoutManager = LinearLayoutManager(this) // 레이아웃 매니저: 리사이클러뷰를 화면에 보여주는 형태 결정
         Log.d(TAG2, "binding.soundRecyclerView.layoutManager = LinearLayoutManager(this)")
+
+        //AlbumFragment
+        setFragment(selectedPlaylist)
     }
+
+
+    fun setFragment(playlist: Playlist? = null) {
+        val albumFragment: AlbumFragment = AlbumFragment()
+        var bundle = Bundle()
+        bundle.putString("title", playlist?.title)
+        bundle.putString("userName", playlist?.userName)
+        bundle.putString("imagePath", playlist?.imagePath)
+        albumFragment.arguments = bundle
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.add(R.id.fragmentView, albumFragment)
+        transaction.commit()
+    }
+
 
     // 테스트용. Sound 클래스에 title, restaurantName만 있음 -> 원래 여기서 직접 추가하는 게 아니라 파이어베이스에서 불러와서 띄워야 함.
 //    fun loadData_test(): MutableList<Sound> {

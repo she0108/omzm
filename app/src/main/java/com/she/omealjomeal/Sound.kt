@@ -18,17 +18,3 @@ class Sound(): Parcelable {
     var duration: Long? = null
 
 }
-
-
-
-
-//    //사운드의 URI를 생성
-//    fun getSoundUri(): Uri {
-//        return Uri.withAppendedPath(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, id)
-//    }
-//
-//    //이미지의 URI를 생성
-//    fun getImageUri(): Uri {
-//
-//    }
-

@@ -13,9 +13,4 @@ data class Playlist(var title: String, var userName: String, var imagePath: Stri
         this.imagePath = imagePath
         this.soundIdList = soundIdList
     }
-
-    // playlist에 sound 추가 (sound id 저장)
-//    fun addSound(sound:Sound) {
-//        this.soundIdList.add(sound.id)
-//    }
 }

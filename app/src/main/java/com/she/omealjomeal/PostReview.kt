@@ -58,7 +58,7 @@ class PostReview : AppCompatActivity() {
         binding.btnSelectImage.setOnClickListener {
             permissionLauncher_gallery.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
         }
-        // 갤러리에서 사진 선택 말고 카메라 열어서 사진 찍고 바로 올리는 기능 추가해야 함
+        // 갤러리에서 사진 선택 말고 카메라 열어서 사진 찍고 바로 올리는 기능 추가해야 함 -> 나중에 시간 남으면 하는 걸로...
 
         // 녹음 버튼 클릭 -> 녹음 시작. 한번 더 누르면 녹음 종료 후 녹음파일 & 파일 경로 저장.
         binding.btnRecord.setOnClickListener {
