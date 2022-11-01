@@ -4,6 +4,7 @@ plugins {
     id 'com.google.gms.google-services'     // firebase 연동
     id 'kotlin-android'                     // Parcelize 사용
     id 'kotlin-android-extensions'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'    // map
 }
 
 android {
@@ -46,7 +47,7 @@ dependencies {
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
@@ -59,4 +60,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage-ktx'       // storage
     implementation 'com.firebaseui:firebase-ui-storage:7.2.0'       // storage에서 파일 다운로드
     implementation 'com.github.bumptech.glide:glide:4.12.0'         // Glide?
+
+    //map
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+
 }

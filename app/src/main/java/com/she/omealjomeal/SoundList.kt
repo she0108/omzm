@@ -3,20 +3,22 @@ package com.she.omealjomeal
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.she.omealjomeal.databinding.ActivitySoundListBinding
+import java.nio.file.attribute.UserPrincipalNotFoundException
+
 
 // 1. 소리 목록
 
-val TAG = "tag"
+val TAG = "TAG"
+val TAG2 = "앱종료"
 
 class SoundList : AppCompatActivity() {
 
-    lateinit var storagePermission: ActivityResultLauncher<String>      // 외부저장소 권한 런처
     val storage = Firebase.storage("gs://omzm-84564.appspot.com")   //
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,16 +30,41 @@ class SoundList : AppCompatActivity() {
         val binding by lazy { ActivitySoundListBinding.inflate(layoutInflater) }
         setContentView(binding.root)
 
-        val selectedPlaylist = intent.getParcelableExtra<Playlist>("playlist")  // PlaylistList에서 선택된 playlist 전달받음 -> playlist.soundIdList에서 sound id 목록 받아오기
-        Log.d(TAG, "Playlist instance 전달 - ${selectedPlaylist != null}")
+        val intentPlaylist = getIntent()
+        val selectedPlaylist = intentPlaylist.getParcelableExtra<Playlist>("playlist")  // PlaylistList에서 선택된 playlist 전달받음 -> playlist.soundIdList에서 sound id 목록 받아오기
+        Log.d(TAG, "Playlist instance 전달 - ${selectedPlaylist}")                // 플레이리스트 홀더에서 정의한 intent_playlist가 여기서 접근이 안 됨
+        Log.d(TAG, "selectedPlaylist.soundIdList -> ${selectedPlaylist?.soundIdList}")
 
 //        val data: MutableList<Sound> = loadData_test()   // <Sound>타입 데이터로 이루어진 리스트 가져와서 변수 data에 저장
-        val data: MutableList<String> = selectedPlaylist?.soundIdList ?: mutableListOf()
+        val data: MutableList<String> = selectedPlaylist?.soundIdList?:mutableListOf()
+        Log.d(TAG, "data에 soundIdList 저장 - ${data}")
+        Log.d(TAG2, "data에 selectedPlaylist의 soundIdList 저장")
         var adapter = SoundRecyclerAdapter()
-        adapter.listSoundID = data    // 어댑터의 listSound에 방금 불러온 data 넣어주기
+        Log.d(TAG2, "SoundRecyclerAdapter instance 생성 -> var adapter")
+        adapter.listSoundID = data    // 어댑터의 listSound에 방금 불러온 data
+        Log.d(TAG2, "adapter.listSoundID에 data에 담긴 soundIdList 저장")
         binding.soundRecyclerView.adapter = adapter
+        Log.d(TAG2, "binding.soundRecyclerView.adapter = adapter")
         binding.soundRecyclerView.layoutManager = LinearLayoutManager(this) // 레이아웃 매니저: 리사이클러뷰를 화면에 보여주는 형태 결정
+        Log.d(TAG2, "binding.soundRecyclerView.layoutManager = LinearLayoutManager(this)")
+
+        //AlbumFragment
+        setFragment(selectedPlaylist)
     }
+
+
+    fun setFragment(playlist: Playlist? = null) {
+        val albumFragment: AlbumFragment = AlbumFragment()
+        var bundle = Bundle()
+        bundle.putString("title", playlist?.title)
+        bundle.putString("userName", playlist?.userName)
+        bundle.putString("imagePath", playlist?.imagePath)
+        albumFragment.arguments = bundle
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.add(R.id.fragmentView, albumFragment)
+        transaction.commit()
+    }
+
 
     // 테스트용. Sound 클래스에 title, restaurantName만 있음 -> 원래 여기서 직접 추가하는 게 아니라 파이어베이스에서 불러와서 띄워야 함.
 //    fun loadData_test(): MutableList<Sound> {

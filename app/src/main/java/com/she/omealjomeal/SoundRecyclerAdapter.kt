@@ -1,6 +1,7 @@
 package com.she.omealjomeal
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -18,7 +19,6 @@ import com.she.omealjomeal.databinding.SoundRecyclerBinding
 import kotlinx.android.synthetic.main.sound_recycler.view.*
 
 class SoundRecyclerAdapter: RecyclerView.Adapter<SoundRecyclerHolder>() {
-
     var listSoundID = mutableListOf<String>()
 
     // 화면에 보이는 아이템 레이아웃의 바인딩을 생성하는 역할
@@ -41,16 +41,16 @@ class SoundRecyclerAdapter: RecyclerView.Adapter<SoundRecyclerHolder>() {
 
 class SoundRecyclerHolder(val binding: SoundRecyclerBinding): RecyclerView.ViewHolder(binding.root) {
 
-    lateinit var context: Context
+    var context: Context
+    var soundS: Sound? = null
+
     init {
         context = binding.root.context
-
-//        binding.root.setOnClickListener {
-//            // 하단 재생바 표시 & 사운드 재생
-//        }
-//        binding.btnPlay2.setOnClickListener {
-//            // 해당 사운드의 재생화면으로 이동
-//        }
+        binding.root.setOnClickListener {
+            val intentSound = Intent(context, SoundList::class.java)        // 재생화면으로 이동하도록 수정
+            intentSound.putExtra("sound", soundS)
+            context.startActivity(intentSound)   
+        }
     }
 
     val database = Firebase.database("https://omzm-84564-default-rtdb.asia-southeast1.firebasedatabase.app/")   // (realtime database)
@@ -64,7 +64,8 @@ class SoundRecyclerHolder(val binding: SoundRecyclerBinding): RecyclerView.ViewH
             it.getValue(Sound::class.java)?.let { sound ->
                 binding.textTitle2.text = sound.title
                 binding.textRestaurant.text = sound.restaurantName
-                downloadImage(sound.imagePath?:"")
+                downloadImage(sound.imagePath)
+                soundS = sound
             }
         }.addOnFailureListener {
             Log.d("TAG", "error=${it.message}")

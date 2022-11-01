@@ -1,10 +1,17 @@
 package com.she.omealjomeal
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import com.she.omealjomeal.databinding.FragmentAlbumBinding
+import kotlinx.android.synthetic.main.fragment_album.view.*
+import kotlinx.android.synthetic.main.playlist_recycler.view.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -33,8 +40,20 @@ class AlbumFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_album, container, false)
+        val binding = FragmentAlbumBinding.inflate(inflater, container, false)
+        binding.textListTitle.text = arguments?.getString("title")
+        binding.textUser.text = arguments?.getString("userName")
+
+        var context = binding.root.context
+        val storage = Firebase.storage("gs://omzm-84564.appspot.com")   // (storage)
+        val path = arguments?.getString("imagePath")?:""
+        storage.getReference(path).downloadUrl.addOnSuccessListener { uri ->
+            Glide.with(context).load(uri).into(binding.root.imageAlbum)
+        }.addOnFailureListener {
+            Log.e("storage", "download error => ${it.message}")
+        }
+
+        return binding.root
     }
 
     companion object {
