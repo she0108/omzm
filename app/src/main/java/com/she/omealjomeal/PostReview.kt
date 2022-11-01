@@ -1,6 +1,7 @@
 package com.she.omealjomeal
 
 import android.Manifest
+import android.media.MediaRecorder
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -36,7 +37,7 @@ class PostReview : AppCompatActivity() {
 
                 // 입력한 텍스트
                 sound.title = editTitle.text.toString()
-                sound.restaurantName = editRestaurantName.text.toString()
+//                sound.restaurantName = editRestaurantName.text.toString()
                 sound.userName = editUserName.text.toString()
                 sound.review = editReview.text.toString()
 
@@ -122,4 +123,34 @@ class PostReview : AppCompatActivity() {
         val filename = "${path}/${userID}_${timeSuffix}.${ext}"
         return filename
     }
+
+/*
+    private var recorder: MediaRecorder? = null
+    private var state = State.BEFORE_RECORDING
+    private val recordingFilePath: String by lazy { "${externalCacheDir?.absolutePath}/recording.3gp"}
+
+    fun startRecording() {
+        recorder = MediaRecorder()
+            .apply {
+                setAudioSource(MediaRecorder.AudioSource.MIC)
+                setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)   // 포멧?
+                setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)      // 엔코더
+                setOutputFile(recordingFilePath)    //캐시에 저장?
+                prepare()
+            }
+        recorder?.start()
+        recordTimeTextView.startCountup()
+        state = State.ON_RECORDING
+    }
+
+    fun stopRecording() {
+        recorder?.run {
+            stop()
+            release()
+        }
+        recorder = null
+        recordTimeTextView.stopCountup()
+        state = State.AFTER_RECORDING
+    }*/
+
 }

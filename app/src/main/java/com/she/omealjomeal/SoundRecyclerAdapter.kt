@@ -43,18 +43,21 @@ class SoundRecyclerHolder(val binding: SoundRecyclerBinding): RecyclerView.ViewH
 
     var context: Context
     var soundS: Sound? = null
+    var restaurantS: Restaurant? = null
 
     init {
         context = binding.root.context
         binding.root.setOnClickListener {
-            val intentSound = Intent(context, SoundList::class.java)        // 재생화면으로 이동하도록 수정
+            val intentSound = Intent(context, PlayActivity::class.java)        // 재생화면으로 이동하도록 수정
             intentSound.putExtra("sound", soundS)
+            intentSound.putExtra("restaurant", restaurantS)
             context.startActivity(intentSound)   
         }
     }
 
     val database = Firebase.database("https://omzm-84564-default-rtdb.asia-southeast1.firebasedatabase.app/")   // (realtime database)
     val soundRef = database.getReference("sounds")
+    val restaurantRef = database.getReference("restaurants")
     val storage = Firebase.storage("gs://omzm-84564.appspot.com")   // (storage)
 
     fun setSound(soundID: String) {
@@ -63,8 +66,14 @@ class SoundRecyclerHolder(val binding: SoundRecyclerBinding): RecyclerView.ViewH
         soundRef.child(soundID).get().addOnSuccessListener {
             it.getValue(Sound::class.java)?.let { sound ->
                 binding.textTitle2.text = sound.title
-                binding.textRestaurant.text = sound.restaurantName
                 downloadImage(sound.imagePath)
+
+                restaurantRef.child(sound.restaurantId).get().addOnSuccessListener {
+                    it.getValue(Restaurant::class.java)?.let { restaurant ->
+                        binding.textRestaurant.text = restaurant.name
+                        restaurantS = restaurant
+                    }
+                }
                 soundS = sound
             }
         }.addOnFailureListener {
