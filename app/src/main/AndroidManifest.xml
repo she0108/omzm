@@ -25,7 +25,13 @@
             android:exported="true" />
         <activity
             android:name=".PlaylistList"
-            android:exported="true"/>
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+    </activity>
 
         <activity
             android:name=".PostReview"
@@ -43,14 +49,7 @@
 
         <activity
             android:name=".PlayActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
+            android:exported="true"/>
 
     </application>
 

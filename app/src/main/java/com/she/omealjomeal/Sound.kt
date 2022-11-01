@@ -9,7 +9,7 @@ import kotlinx.android.parcel.Parcelize
 class Sound(): Parcelable {
 
     var title: String = ""
-    var restaurantName: String = ""
+    var restaurantId: String = ""
     var userName: String = ""
     var review: String = ""
     var imagePath: String = ""
