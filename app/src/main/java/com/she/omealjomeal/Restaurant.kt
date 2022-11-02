@@ -9,5 +9,8 @@ class Restaurant(): Parcelable {
     var id: String = ""
     var name: String = ""
     var imagePath: String = ""
-    var location: String = ""
+    var latitude: Float = 0.0F
+    var longitude: Float = 0.0F
+    var address: String = ""
+
 }

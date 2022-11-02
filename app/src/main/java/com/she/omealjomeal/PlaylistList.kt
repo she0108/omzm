@@ -10,16 +10,15 @@ import com.she.omealjomeal.databinding.ActivityPlaylistListBinding
 
 class PlaylistList : AppCompatActivity() {
 
-    val binding by lazy { ActivityPlaylistListBinding.inflate(layoutInflater) }
+    private val binding by lazy { ActivityPlaylistListBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(binding.root)
 
         // 리사이클러뷰
         val data: MutableList<Playlist> = loadData_test()        // list of Playlist
-        Log.d(TAG, "data에 Playlist리스트 저장 -> ${data}")
+        Log.d(TAG, "data에 Playlist리스트 저장 -> $data")
         var adapter = PlaylistRecyclerAdapter()
         adapter.listPlaylist = data
         Log.d(TAG, "어댑터의 listPlaylist에 Playlist리스트 전달 -> ${adapter.listPlaylist}")
@@ -35,7 +34,7 @@ class PlaylistList : AppCompatActivity() {
 
 
 
-        var c1 = mutableListOf("-NE18u6wncx70OYdxjqp")
+        var c1 = mutableListOf("-NFqN-1SP6ypQVrJ146e")
         var c2 = mutableListOf("-NE18u6wncx70OYdxjqp", "-NE192PaMztCJEoIKPGU", "-NFJVqVOClthJjdIrrp4")
         var c3 = mutableListOf("-NFJW5Q6kXPNkYqviSF2", "-NFJWT6KprEMBSqWY_KD")
 
