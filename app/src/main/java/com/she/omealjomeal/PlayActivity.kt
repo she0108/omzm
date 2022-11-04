@@ -1,6 +1,8 @@
 package com.she.omealjomeal
 
 import android.content.Intent
+import android.media.AudioManager
+import android.media.MediaPlayer
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,6 +14,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.she.omealjomeal.databinding.ActivityPlay2Binding
+import kotlinx.android.synthetic.main.activity_play2.view.*
 
 class PlayActivity : AppCompatActivity() {
 
@@ -47,6 +50,7 @@ class PlayActivity : AppCompatActivity() {
                 }
 
                 // 녹음 파일 storage에서 불러오기
+                // ***오류 - location must not be null or empty
                 storage.getReference(sound.audioPath?:"").downloadUrl.addOnSuccessListener { uri ->
                     audioUri = uri      // 녹음파일 uri 저장
                 }.addOnFailureListener {
@@ -63,6 +67,9 @@ class PlayActivity : AppCompatActivity() {
         }
 
 
+
+
+
         // 가게이름 눌렀을 때 가게정보 화면으로 이동
         binding.textRestaurantName2.setOnClickListener {
             Log.d("click", "textView3 clicked")
@@ -71,6 +78,7 @@ class PlayActivity : AppCompatActivity() {
             this.startActivity(intentRestaurant)
         }
 
+        // 사진 눌렀을 때 리뷰 창 visible, clickable
         binding.imageSound2.setOnClickListener {
             if (binding.layoutLongReview.visibility == INVISIBLE) {
                 binding.layoutLongReview.visibility = VISIBLE
@@ -78,15 +86,46 @@ class PlayActivity : AppCompatActivity() {
             }
         }
 
+        // 리뷰 창 떠있는 상태에서 누르면 다시 invisible, not clickable
         binding.layoutLongReview.setOnClickListener {
             binding.layoutLongReview.visibility = INVISIBLE
             binding.layoutLongReview.isClickable = false
         }
 
         // 재생, 일시정지 등 구현
-        // 처음 화면 실행될 때 '재생'으로 시작
-        binding.imageButton7.setOnClickListener {
-
+        player = MediaPlayer().apply {
+            setAudioStreamType(AudioManager.STREAM_MUSIC)
+            setDataSource(applicationContext, audioUri)
+            prepare()
         }
+        startPlaying()  // 처음 화면 실행될 때 '재생'으로 시작
+        binding.root.btnPlay3.setOnClickListener {  // 재생/일시정지 버튼 눌렀을 때
+            when (state) {
+                State2.PLAY -> {
+                    stopPlaying()
+                }
+                State2.PAUSE -> {
+                    startPlaying()
+                }
+            }
+        }
+    }
+
+    private var player: MediaPlayer? = null
+
+    private var state = State2.PLAY
+        set(value) {
+            field = value
+            binding.root.btnPlay3.updateIconWithState(value)
+        }
+
+    fun startPlaying() {
+        state = State2.PLAY
+        player?.start()
+    }
+
+    fun stopPlaying() {
+        state = State2.PAUSE
+        player?.pause()
     }
 }
