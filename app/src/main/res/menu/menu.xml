@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="Home"
+        android:enabled="true"
+        android:id="@+id/menu_home"
+        android:icon="@drawable/play2" />
+    <item
+        android:title="Search"
+        android:enabled="true"
+        android:id="@+id/menu_search"
+        android:icon="@drawable/pause" />
+    <item
+        android:title="Review"
+        android:enabled="true"
+        android:id="@+id/menu_review"
+        android:icon="@drawable/ic_pencil" />
+    <item
+        android:title="My Page"
+        android:enabled="true"
+        android:id="@+id/menu_mypage"
+        android:icon="@drawable/stop" />
+</menu>
