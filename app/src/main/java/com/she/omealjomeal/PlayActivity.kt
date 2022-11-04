@@ -1,79 +1,92 @@
 package com.she.omealjomeal
 
-import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import com.bumptech.glide.Glide
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import com.she.omealjomeal.databinding.ActivityPlayBinding
-import kotlinx.android.synthetic.main.activity_play.view.*
-import kotlinx.android.synthetic.main.sound_recycler.view.*
+import com.she.omealjomeal.databinding.ActivityPlay2Binding
 
 class PlayActivity : AppCompatActivity() {
 
-    private val binding by lazy { ActivityPlayBinding.inflate(layoutInflater) }
+    private val binding by lazy { ActivityPlay2Binding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val intentSound = getIntent()
-        val selectedSoundId = intentSound.getStringExtra("sound")      // 리뷰목록(SoundList)에서 선택된 리뷰(Sound) 인스턴스가 selectedSound에 저장됨
-        val selectedRestaurantId = intentSound.getStringExtra("restaurant")
+        val selectedSoundId = intent.getStringExtra("sound")      // 리뷰목록(SoundList)에서 선택된 리뷰(Sound) 인스턴스가 selectedSound에 저장됨
+        val selectedRestaurantId = intent.getStringExtra("restaurant")
         Log.d("TAG", "selectedSoundId -> $selectedSoundId")
         Log.d("TAG", "selectedRestaurantId -> $selectedRestaurantId")
 
-
-
-/*      *binding 쓰는 코드로 전부 수정*
-        val button : ImageButton = findViewById(R.id.imageBut)
-        val text : TextView = findViewById(R.id.textView6)
-        button.setOnClickListener{
-            text.setText("오밀조밀은 기존의 정량적 리뷰만으로는 파악할 수 없는 정보들을 음성 리뷰 및 텍스트 리뷰들로 보완하여 어플을 개발하였습니다.")
-        }*/
-
-
-
         val database = Firebase.database("https://omzm-84564-default-rtdb.asia-southeast1.firebasedatabase.app/")   // (realtime database)
+        val storage = Firebase.storage("gs://omzm-84564.appspot.com")
         val soundRef = database.getReference("sounds")
         val restaurantRef = database.getReference("restaurants")
-        val storage = Firebase.storage("gs://omzm-84564.appspot.com")
-        val context = binding.root.context
 
+        lateinit var audioUri: Uri
 
         // sound 관련된 부분
         soundRef.child(selectedSoundId?:"").get().addOnSuccessListener {
             it.getValue(Sound::class.java)?.let { sound ->
-                binding.root.title_text_view.text = sound.title     //  sound title
-                binding.root.textView.text = sound.userName     // sound userName
+                binding.textSoundTitle.text = sound.title     //  sound title
+                binding.textUserName.text = sound.userName     // sound userName
 
-                // soundImage 설정
-//                storage.getReference(sound.imagePath).downloadUrl.addOnSuccessListener { uri ->
-//                    Glide.with(context).load(uri).into(binding.root.imageSound)     // imageSound 대신 사진 보여줄 이미지뷰
-//                }.addOnFailureListener {
-//                    Log.e("storage", "download error => ${it.message}")
-//                }
+                // soundImage2 설정
+                storage.getReference(sound.imagePath).downloadUrl.addOnSuccessListener { uri ->
+                    Glide.with(this).load(uri).into(binding.imageSound2)     // imageSound 대신 사진 보여줄 이미지뷰
+                }.addOnFailureListener {
+                    Log.e("storage", "download error => ${it.message}")
+                }
+
+                // 녹음 파일 storage에서 불러오기
+                storage.getReference(sound.audioPath?:"").downloadUrl.addOnSuccessListener { uri ->
+                    audioUri = uri      // 녹음파일 uri 저장
+                }.addOnFailureListener {
+                    Log.e("storage", "download error => ${it.message}")
+                }
             }
         }
 
-        // restaurant 관련된 부분  *지금 restaurant 정보 전달 안 됨
+        // restaurant 관련된 부분
         restaurantRef.child(selectedRestaurantId?:"").child("name").get().addOnSuccessListener {
-            binding.root.textView3.text = it.value.toString()
+            binding.textRestaurantName2.text = it.value.toString()
         }.addOnFailureListener {
             Log.d("TAG", "error=${it.message}")
         }
 
 
         // 가게이름 눌렀을 때 가게정보 화면으로 이동
-        binding.root.textView3.setOnClickListener {
+        binding.textRestaurantName2.setOnClickListener {
             Log.d("click", "textView3 clicked")
-            val intentRestaurant = Intent(context, MapsActivity::class.java)        // MapsActivity -> 가게정보 화면으로 수정
+            val intentRestaurant = Intent(this, MapsActivity::class.java)        // MapsActivity -> 가게정보 화면으로 수정
             intentRestaurant.putExtra("restaurant", selectedRestaurantId)
-            context.startActivity(intentRestaurant)
+            this.startActivity(intentRestaurant)
+        }
+
+        binding.imageSound2.setOnClickListener {
+            if (binding.layoutLongReview.visibility == INVISIBLE) {
+                binding.layoutLongReview.visibility = VISIBLE
+                binding.layoutLongReview.isClickable = true
+            }
+        }
+
+        binding.layoutLongReview.setOnClickListener {
+            binding.layoutLongReview.visibility = INVISIBLE
+            binding.layoutLongReview.isClickable = false
+        }
+
+        // 재생, 일시정지 등 구현
+        // 처음 화면 실행될 때 '재생'으로 시작
+        binding.imageButton7.setOnClickListener {
+
         }
     }
 }
