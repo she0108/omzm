@@ -3,8 +3,7 @@ package com.she.omealjomeal
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
-@Parcelize
-class Restaurant(): Parcelable {
+class Restaurant() {
 
     var id: String = ""
     var name: String = ""

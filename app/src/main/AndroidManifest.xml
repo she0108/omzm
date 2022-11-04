@@ -17,25 +17,31 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OMealJoMeal"
         tools:targetApi="31">
-
         <activity
-            android:name=".SoundList"
-            android:exported="true" />
-        <activity
-            android:name=".PlaylistList"
-            android:exported="true" />
-        <activity
-            android:name=".PostReview"
-            android:exported="true">
+            android:name=".PostReview2"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".RestaurantInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".StartActivity"
+            android:exported="true" />
+        <activity
+            android:name=".PlaylistList"
+            android:exported="true"/>
 
-
-        <!-- Map -->
+        <activity
+            android:name=".SoundList"
+            android:exported="true" />
+        <activity
+            android:name=".PostReview"
+            android:exported="true" /> <!-- Map -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBLMinRgnSUoTkIwLSoJ0Q-ZWVDCdSsmEY" />

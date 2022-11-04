@@ -5,8 +5,7 @@ import android.os.Parcelable
 import android.provider.MediaStore
 import kotlinx.android.parcel.Parcelize
 
-@Parcelize
-class Sound(): Parcelable {
+class Sound() {
 
     var id: String = ""
     var title: String = ""

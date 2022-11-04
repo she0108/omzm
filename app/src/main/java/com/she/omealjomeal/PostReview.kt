@@ -273,6 +273,4 @@ class PostReview : AppCompatActivity() {
         }
         externalCacheFile.delete()
     }
-
-
 }
