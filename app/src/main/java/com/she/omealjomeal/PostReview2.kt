@@ -8,12 +8,19 @@ import android.util.Log
 import android.widget.ArrayAdapter
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.addTextChangedListener
+import com.bumptech.glide.Glide
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.she.omealjomeal.databinding.ActivityPostReview2Binding
+import kotlinx.android.synthetic.main.restaurant_recycler.view.*
 
 class PostReview2 : AppCompatActivity() {
+
+    val binding = ActivityPostReview2Binding.inflate(layoutInflater)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityPostReview2Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
         var spinnerData = listOf("", "가족", "친구", "애인", "나 자신")
@@ -22,31 +29,61 @@ class PostReview2 : AppCompatActivity() {
 
         setRecordFragment()     // 하단 녹음부분
 
-        // SelectRestaurant에서 선택한 가게 정보 받기
-        val activityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == RESULT_OK) {
-                val message = it.data?.getStringExtra("returnValue")
-            }
-        }
+//        // SelectRestaurant에서 선택한 가게 정보 받기
+//        val activityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+//            if (it.resultCode == RESULT_OK) {
+//                var restaurantID = it.data?.getStringExtra("restaurant")
+//            }
+//        }
 
-        // 가게 정보 선택하는 화면으로로
+        // 가게 정보 선택하는 화면으로 이동
         binding.layoutRes.setOnClickListener {
-            val intent = Intent(this, SelectRestaurantActivity::class.java)
-
+            val intentSelect = Intent(this, SelectRestaurantActivity::class.java)
+            this.startActivity(intentSelect)
         }
-
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        //가게 선택 후 돌아왔을 때 가게정보 표시
+        if(intent.getStringExtra("from") == "SelectRestaurant") {
+            var restaurantID = intent.getStringExtra("restaurant")
+
+            restaurantRef.child(restaurantID?:"").get().addOnSuccessListener {
+                it.getValue(Restaurant::class.java)?.let { restaurant ->    // Restaurant 클래스로 가져오는 거 해보고 안되면 일일이 String으로...
+                    binding.textResName.text = restaurant.name
+                    binding.textResAddress.text = restaurant.address
+                    downloadImage(restaurant.imagePath)
+                }
+            }.addOnFailureListener {
+                Log.d("TAG", "error=${it.message}")
+            }
+
+
+        }
+    }
+
+    // 하단 녹음 부분
     fun setRecordFragment() {
-        val recordFragment: RecordFragment = RecordFragment()
+        val recordFragment = RecordFragment()
         val transaction = supportFragmentManager.beginTransaction()
         transaction.add(R.id.recordLayout, recordFragment)
         transaction.commit()
     }
 
-    // 가게 선택 후 setRestaurantFragment()
-    fun setRestaurantFragment() {
+    val database = Firebase.database("https://omzm-84564-default-rtdb.asia-southeast1.firebasedatabase.app/")
+    private val restaurantRef = database.getReference("restaurants")
+    private val storage = Firebase.storage("gs://omzm-84564.appspot.com")
 
+    // 가게 선택 후 setRestaurantFragment()
+
+
+    fun downloadImage(path: String) {
+        storage.getReference(path).downloadUrl.addOnSuccessListener { uri ->
+            Glide.with(this).load(uri).into(binding.imageRes)
+        }.addOnFailureListener {
+            Log.e("storage", "download error => ${it.message}")
+        }
     }
 }

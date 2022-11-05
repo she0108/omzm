@@ -50,14 +50,27 @@ class PlayActivity : AppCompatActivity() {
                 }
 
                 // 녹음 파일 storage에서 불러오기
-                // ***오류 - location must not be null or empty
+                Log.d("storage", "sound.audioPath -> ${sound.audioPath}")
                 storage.getReference(sound.audioPath?:"").downloadUrl.addOnSuccessListener { uri ->
+                    Log.d("storage", "set audio uri -> ${uri != null}")
                     audioUri = uri      // 녹음파일 uri 저장
+                    Log.d("storage", "set audio uri -> ${audioUri != null}")
+                    player = MediaPlayer().apply {
+                        setAudioStreamType(AudioManager.STREAM_MUSIC)
+                        setDataSource(applicationContext, uri)     // lateinit property audioUri has not been initialized
+                        prepare()
+                    }
+                    Log.d("storage", "create player -> ${player != null}")
                 }.addOnFailureListener {
                     Log.e("storage", "download error => ${it.message}")
+                    Log.d("storage", "download error => ${it.message}")
                 }
             }
         }
+
+
+
+
 
         // restaurant 관련된 부분
         restaurantRef.child(selectedRestaurantId?:"").child("name").get().addOnSuccessListener {
@@ -93,11 +106,7 @@ class PlayActivity : AppCompatActivity() {
         }
 
         // 재생, 일시정지 등 구현
-        player = MediaPlayer().apply {
-            setAudioStreamType(AudioManager.STREAM_MUSIC)
-            setDataSource(applicationContext, audioUri)
-            prepare()
-        }
+
         startPlaying()  // 처음 화면 실행될 때 '재생'으로 시작
         binding.root.btnPlay3.setOnClickListener {  // 재생/일시정지 버튼 눌렀을 때
             when (state) {
@@ -111,6 +120,7 @@ class PlayActivity : AppCompatActivity() {
         }
     }
 
+
     private var player: MediaPlayer? = null
 
     private var state = State2.PLAY
@@ -118,6 +128,14 @@ class PlayActivity : AppCompatActivity() {
             field = value
             binding.root.btnPlay3.updateIconWithState(value)
         }
+
+/*    fun createPlayer(uri: Uri) {
+        player = MediaPlayer().apply {
+            setAudioStreamType(AudioManager.STREAM_MUSIC)
+            setDataSource(applicationContext, uri)     // lateinit property audioUri has not been initialized
+            prepare()
+        }
+    }*/
 
     fun startPlaying() {
         state = State2.PLAY
