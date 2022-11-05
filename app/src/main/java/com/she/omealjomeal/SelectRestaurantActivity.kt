@@ -32,5 +32,10 @@ class SelectRestaurantActivity : AppCompatActivity() {
         binding.restaurantRecyclerView.adapter = adapter
         binding.restaurantRecyclerView.layoutManager = LinearLayoutManager(this) // 레이아웃 매니저: 리사이클러뷰를 화면에 보여주는 형태 결정
 
+        // 선택 후 돌아가는 코드 -> Adapter에서 돌아가면 되니까 필요 없나...?
+//        val returnIntent = Intent()
+//        returnIntent.putExtra("returnValue", binding.editMessage.text.toString())
+//        setResult(RESULT_OK, returnIntent)
+//        finish()
     }
 }

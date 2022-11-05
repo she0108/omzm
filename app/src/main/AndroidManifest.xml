@@ -22,13 +22,8 @@
             android:exported="false" />
         <activity
             android:name=".PostReview2"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:exported="true"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity
             android:name=".RestaurantInfoActivity"
             android:exported="false" />
@@ -37,7 +32,13 @@
             android:exported="true" />
         <activity
             android:name=".PlaylistList"
-            android:exported="true" />
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".SoundList"
             android:exported="true" />

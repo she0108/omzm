@@ -42,10 +42,11 @@ class RestaurantRecyclerAdapter: RecyclerView.Adapter<RestaurantRecyclerAdapter.
         init {
             context = binding.root.context
             binding.root.setOnClickListener {
-                // 선택한 restaurant id 인텐트(말고 프래그먼트에서 쓰는 거. Fragment Listener?)로 액티비티에 전달
-/*                val intentRestaurant = Intent(context, PlayActivity::class.java)
-                intentSound.putExtra("restaurant", restaurantS_id)
-                context.startActivity(intentSound)*/
+                // 선택한 restaurant id 인텐트로 액티비티에 전달
+                val intentRestaurant = Intent(context, PostReview2::class.java)
+                intentRestaurant.putExtra("restaurant", restaurantS_id)
+                intentRestaurant.putExtra("from", "SelectRestaurant")
+                context.startActivity(intentRestaurant)
             }
         }
 
