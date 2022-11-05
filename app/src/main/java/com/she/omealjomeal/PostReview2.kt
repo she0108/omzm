@@ -1,5 +1,6 @@
 package com.she.omealjomeal
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -21,15 +22,18 @@ class PostReview2 : AppCompatActivity() {
 
         setRecordFragment()     // 하단 녹음부분
 
-/*        val resultListener = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { fromSub ->
-
+        // SelectRestaurant에서 선택한 가게 정보 받기
+        val activityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                val message = it.data?.getStringExtra("returnValue")
+            }
         }
 
         // 가게 정보 선택하는 화면으로로
         binding.layoutRes.setOnClickListener {
             val intent = Intent(this, SelectRestaurantActivity::class.java)
 
-        }*/
+        }
 
 
     }
