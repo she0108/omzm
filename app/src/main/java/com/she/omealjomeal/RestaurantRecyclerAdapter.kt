@@ -5,6 +5,8 @@ import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Filterable
+import android.widget.SearchView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.database.ktx.database
@@ -14,8 +16,11 @@ import com.she.omealjomeal.databinding.RestaurantRecyclerBinding
 import kotlinx.android.synthetic.main.restaurant_recycler.view.*
 import kotlinx.android.synthetic.main.sound_recycler.view.*
 
+
 class RestaurantRecyclerAdapter: RecyclerView.Adapter<RestaurantRecyclerAdapter.RestaurantRecyclerHolder>() {
     var listRestaurantID = mutableListOf<String>()
+    var filteredList = listRestaurantID     // 일단 전체리스트 복사
+    var map_name_id = mutableMapOf<String, String>()
 
     // 화면에 보이는 아이템 레이아웃의 바인딩을 생성하는 역할
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantRecyclerHolder {
@@ -25,19 +30,38 @@ class RestaurantRecyclerAdapter: RecyclerView.Adapter<RestaurantRecyclerAdapter.
 
     // 생성된 뷰홀더를 화면에 보여주는 & 아이템 레이아웃에 데이터를 출력하는 역할
     override fun onBindViewHolder(holder: RestaurantRecyclerHolder, position: Int) {
-        val restaurantID = listRestaurantID.get(position)     // listSound에서 현재 위치에 해당하는 사운드를 하나 꺼내 sound 변수에 저장 후 홀더에 전달
+        val restaurantID = filteredList.get(position)     // listSound에서 현재 위치에 해당하는 사운드를 하나 꺼내 sound 변수에 저장 후 홀더에 전달
         holder.setRestaurant(restaurantID)
     }
 
     // 목록의 개수를 알려주는 역할
     override fun getItemCount(): Int {
-        return listRestaurantID.size
+        return filteredList.size
     }
 
-    class RestaurantRecyclerHolder(val binding: RestaurantRecyclerBinding): RecyclerView.ViewHolder(binding.root) {
+    fun getFilter(s: String): Int {
+        filteredList = mutableListOf()
+        if (s.trim { it <= ' ' }.isEmpty()) {
+            filteredList = listRestaurantID
+        } else {
+            for (name in map_name_id.keys.toList()) {
+                if (name.contains(s)) {
+                    filteredList.add(map_name_id.get(name)?:"")
+                }
+            }
+        }
+        notifyDataSetChanged()
+        return filteredList.size
+    }
+
+    inner class RestaurantRecyclerHolder(val binding: RestaurantRecyclerBinding): RecyclerView.ViewHolder(binding.root) {
 
         var context: Context
         var restaurantS_id: String = ""
+
+        private val database = Firebase.database("https://omzm-84564-default-rtdb.asia-southeast1.firebasedatabase.app/")   // (realtime database)
+        private val restaurantRef = database.getReference("restaurants")
+        private val storage = Firebase.storage("gs://omzm-84564.appspot.com")   // 이거 전역변수로 할까?
 
         init {
             context = binding.root.context
@@ -50,10 +74,6 @@ class RestaurantRecyclerAdapter: RecyclerView.Adapter<RestaurantRecyclerAdapter.
             }
         }
 
-        private val database = Firebase.database("https://omzm-84564-default-rtdb.asia-southeast1.firebasedatabase.app/")   // (realtime database)
-        private val restaurantRef = database.getReference("restaurants")
-        private val storage = Firebase.storage("gs://omzm-84564.appspot.com")   // 이거 전역변수로 할까?
-
         fun setRestaurant(restaurantID: String) {
             restaurantRef.child(restaurantID).get().addOnSuccessListener {
                 it.getValue(Restaurant::class.java)?.let { restaurant ->    // Restaurant 클래스로 가져오는 거 해보고 안되면 일일이 String으로...
@@ -62,6 +82,7 @@ class RestaurantRecyclerAdapter: RecyclerView.Adapter<RestaurantRecyclerAdapter.
                     downloadImage(restaurant.imagePath)
                     restaurantS_id = restaurant.id
                     Log.d("TAG", "restaurantS_id -> $restaurantS_id")
+                    map_name_id.put(restaurant.name, restaurantID)
                 }
             }.addOnFailureListener {
                 Log.d("TAG", "error=${it.message}")

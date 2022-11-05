@@ -14,7 +14,6 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.she.omealjomeal.databinding.ActivityPostReview2Binding
-import com.she.omealjomeal.databinding.ActivityPostReviewBinding
 
 
 class PostReview2 : AppCompatActivity() {

@@ -2,10 +2,13 @@ package com.she.omealjomeal
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextWatcher
 import android.util.Log
+import android.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.she.omealjomeal.databinding.ActivitySelectRestaurant2Binding
 import com.she.omealjomeal.databinding.ActivitySelectRestaurantBinding
 
 class SelectRestaurantActivity : AppCompatActivity() {
@@ -34,11 +37,29 @@ class SelectRestaurantActivity : AppCompatActivity() {
         }
 
 
+        var searchViewTextListener: SearchView.OnQueryTextListener =
+            object : SearchView.OnQueryTextListener {
+                //검색버튼 입력시 호출, 검색버튼이 없으므로 사용하지 않음
+                override fun onQueryTextSubmit(s: String): Boolean {
+                    return false
+                }
+
+                //텍스트 입력/수정시에 호출
+                override fun onQueryTextChange(s: String): Boolean {
+                    var num = adapter.getFilter(s)
+                    binding.textView11.text = "검색결과 총 " + num.toString() + "건"
+                    return false
+                }
+            }
+
+        binding.searchView.setOnQueryTextListener(searchViewTextListener)
+
+        binding.btnClose2.setOnClickListener {
+            finish()
+        }
 
 
-         // 레이아웃 매니저: 리사이클러뷰를 화면에 보여주는 형태 결정
-
-        // 선택 후 돌아가는 코드 -> Adapter에서 돌아가면 되니까 필요 없나...?
+                    // 선택 후 돌아가는 코드 -> Adapter에서 돌아가면 되니까 필요 없나...?
 //        val returnIntent = Intent()
 //        returnIntent.putExtra("returnValue", binding.editMessage.text.toString())
 //        setResult(RESULT_OK, returnIntent)
