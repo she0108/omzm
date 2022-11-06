@@ -7,12 +7,12 @@
     android:backgroundTint="#03A9F4"
     tools:context=".PostReview2">
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/frameLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:foregroundGravity="center_vertical|center_horizontal"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/scrollView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,14 +23,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            app:srcCompat="@drawable/play2" />
-
-        <ImageButton
-            android:id="@+id/imageButton4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left|center_vertical"
-            android:layout_weight="1"
             app:srcCompat="@drawable/play2" />
 
         <TextView
@@ -44,7 +36,15 @@
             android:text="리뷰 작성하기"
             android:textSize="24sp"
             android:textStyle="bold" />
-    </FrameLayout>
+
+        <ImageButton
+            android:id="@+id/imageButton4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            app:srcCompat="@drawable/play2" />
+
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/recordLayout"
