@@ -27,6 +27,14 @@ class PlaylistList : AppCompatActivity() {
 
         // SoundList 액티비티로 이동
 
+
+        // 하단 탭 버튼 -> 리뷰 작성 화면으로
+        binding.imageButton7.setOnClickListener {
+            val intent = Intent(this, PostReview2::class.java)
+            intent.putExtra("from", "other")
+            this.startActivity(intent)
+        }
+
     }
 
     fun loadData_test(): MutableList<Playlist> {

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="130dp"
+    android:layout_height="110dp"
     tools:context=".RecordFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -17,6 +17,7 @@
         android:layout_marginTop="18dp"
         android:layout_marginEnd="32dp"
         android:theme="@style/SeekBarColor"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,11 +26,12 @@
         android:id="@+id/textViewStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
-        android:layout_marginEnd="100dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="110dp"
         android:text="0:00"
         android:textColor="@color/skyblue"
         android:textSize="14sp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toStartOf="@+id/textViewTotal"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,22 +41,24 @@
         android:id="@+id/textCountup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:text="0:00"
+        android:visibility="invisible"
+        android:layout_margin="8dp"
         app:layout_constraintBottom_toTopOf="@+id/btnRecord2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seekBar2" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewTotal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="7dp"
+        android:layout_marginStart="110dp"
+        android:layout_marginTop="4dp"
         android:text="0:00"
         android:textColor="@color/darkgray"
         android:textSize="14sp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/textViewStart"
@@ -62,8 +66,8 @@
 
     <com.she.omealjomeal.RecordButton
         android:id="@+id/btnRecord2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginBottom="8dp"
         android:background="@color/none"
         android:src="@drawable/play2"
@@ -74,22 +78,24 @@
 
     <ImageButton
         android:id="@+id/btnClear2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="16dp"
         android:background="@color/none"
         android:src="@drawable/ic_delete"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnRecord2"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/btnCheck2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="16dp"
         android:background="@color/none"
         android:src="@drawable/ic_check"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btnRecord2" />

@@ -37,6 +37,7 @@ class RecordFragment : Fragment() {
     ): View? {
         binding = FragmentRecordBinding.inflate(inflater, container, false)   //프래그먼트 바인딩
 
+
         binding.btnRecord2.setOnClickListener {
             when (state) {
                 State.BEFORE_RECORDING -> { // 녹음 시작.
@@ -171,6 +172,7 @@ class RecordFragment : Fragment() {
         check = Check.AFTER_CHECK
         state = state
         Log.d("Record", "checkRecordedFile() called")
+        PostReview2.saveThings.audioRecorded = true
     }
 
     fun seekBarVisible(flag: Boolean) {
@@ -198,4 +200,5 @@ class RecordFragment : Fragment() {
             binding.btnCheck2.visibility = INVISIBLE
         }
     }
+
 }

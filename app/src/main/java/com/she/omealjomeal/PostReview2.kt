@@ -19,6 +19,8 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -37,39 +39,31 @@ class PostReview2 : AppCompatActivity() {
 
     val TAG = "PostReview"
     val TAG2 = "Record"
+    val TAG3 = "SaveInstance"
 
     val binding by lazy { ActivityPostReview2Binding.inflate(layoutInflater) }
     lateinit var context1: Context
-    lateinit var restaurantID: String
+    var restaurantID: String? = null
     lateinit var selectedValue: String
 
-    object checkBeforePost {
-        var titleInput = false
-        var resSelected= false
-        var reviewInput1 = false
-        var reviewInput2 = false
-        var reviewInput3 = false
-        var imageSelected = false
-        var audioRecorded = false
-    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(TAG3, "onCreate called -> true")
         setContentView(binding.root)
         context1 = binding.root.context
+
 
         setRecordFragment()
 
         var spinnerData = listOf("    ", "가족", "친구", "애인", "나 자신")
         var adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, spinnerData)
 
-
         binding.spinnerReview1.adapter = adapter
         binding.spinnerReview1.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
-
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 selectedValue = spinnerData[p2]
             }
@@ -81,28 +75,23 @@ class PostReview2 : AppCompatActivity() {
 
                 var sound = Sound()
 
-
-//                s.trim { it <= ' ' }.isEmpty() -> String에 공백만 있는지 확인하는 코드
-                
                 // 입력한 텍스트
                 sound.title = editTextTitle.text.toString()
-                sound.restaurantId = restaurantID   // 가게선택 화면에서 restaurantId 넘겨받기
+                sound.restaurantId = restaurantID?:""   // 가게선택 화면에서 restaurantId 넘겨받기
                 //sound.userName = editUserName.text.toString()       // 이건 앱 시작할 때 입력하게 하든가, 아님 그냥 앱 내부에 정해놓든가
                 sound.review1 = selectedValue             //이건 가족, 애인 등 고름
                 sound.review2 = editText1.text.toString()                //이건 가족 애인 등 고르는 거 아래에 ~곳이다.
                 sound.review3 = editTextLongReview.text.toString()      // 선택지형, 주관식, 추가리뷰 다 따로 +해시태그도?
 
-                // 이미지
-                uploadImage(saveThings.imageURI)    // 저장해둔 이미지 URI
-                sound.imagePath = saveThings.imageFullpath
 
-                //음성파일
-                Log.d("Record", "audioURI initialized -> ${saveThings.audioURI}")
-                uploadAudio(saveThings.audioURI)
-                sound.audioPath = saveThings.audioFullpath
+                if (checkInput(sound.title) && checkInput(sound.review1) && checkInput(sound.review2)) { textInput = true }
+                if (!(restaurantID.isNullOrBlank())) { resSelected = true }
 
-                // Sound() 만들기 전에 글자수 확인하는 코드 필요할 듯? -> value.isNotEmpty() 함수 이용
-                addItem(sound)      // firebase에 sound 정보 업로드
+                if (textInput && resSelected && imageSelected && saveThings.audioRecorded) {
+                    postReview(sound)
+                } else {
+                    Toast.makeText(baseContext, "제목, 가게정보, 사진 ... 을 모두 등록해야 리뷰를 작성할 수 있습니다.", Toast.LENGTH_LONG).show()
+                }
 
                 // 업로드 성공적 -> Toast 메시지 같은 거 띄우고 화면 초기화
                 resetLayout()
@@ -124,6 +113,13 @@ class PostReview2 : AppCompatActivity() {
             val intentSelect = Intent(this, SelectRestaurantActivity::class.java)
             this.startActivity(intentSelect)
         }
+
+        // 하단 탭 버튼 -> (마이페이지) 플레이리스트 화면으로
+        binding.imageButton10.setOnClickListener {
+            val intent = Intent(this, PlaylistList::class.java)
+            intent.putExtra("from", "other")
+            this.startActivity(intent)
+        }
     }
 
     override fun onStop() {
@@ -131,10 +127,11 @@ class PostReview2 : AppCompatActivity() {
         // 녹음파일 재생되고 있다면 stop
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
+    /*override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
         // 제목, review1, 2, 3, 선택한 사진 uri, 녹음파일? 저장
+        Log.d(TAG3, "onSaveInstanceState called -> true")
         outState.putString("title", binding.editTextTitle.text.toString())
         outState.putString("review1", selectedValue)
         outState.putString("review2", binding.editText1.text.toString())
@@ -144,13 +141,17 @@ class PostReview2 : AppCompatActivity() {
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
+        Log.d(TAG3, "onRestoreInstanceState called -> true")
         binding.editTextTitle.setText(savedInstanceState.getString("title"))
         binding.editText1.setText(savedInstanceState.getString("review2"))
         binding.editTextLongReview.setText(savedInstanceState.getString("review3"))
-    }
+    }*/
 
     override fun onResume() {
         super.onResume()
+
+        Log.d(TAG3, "onResume() called -> true")
+
         //가게 선택 후 돌아왔을 때 가게정보 표시
         if(intent.getStringExtra("from") == "SelectRestaurant") {
             restaurantID = intent.getStringExtra("restaurant").toString()
@@ -170,11 +171,17 @@ class PostReview2 : AppCompatActivity() {
         }
     }
 
+    var textInput = false
+    var resSelected= false
+    var imageSelected = false
+
+
     object saveThings {
         lateinit var imageURI: Uri      // 선택한 사진 storage에 올리기 전에 URI 여기다 저장
         lateinit var imageFullpath: String      // storage에 사진 업로드 후 생성된 파일주소 저장
         lateinit var audioURI: Uri
         lateinit var audioFullpath: String
+        var audioRecorded = false
     }
 
     // Sound 데이터를 노드에 입력하는 함수 (realtime database)
@@ -201,6 +208,7 @@ class PostReview2 : AppCompatActivity() {
         binding.imageView3.setImageURI(uri)      // imageView에 선택한 사진 띄우기
         if (uri != null) {
             saveThings.imageURI = uri
+            imageSelected = true
             Log.d(TAG, "imageURI saved in saveThings.imageURI")
         }
     }
@@ -266,8 +274,27 @@ class PostReview2 : AppCompatActivity() {
         externalCacheFile.delete()
     }
 
+    fun checkInput(s: String): Boolean {
+        return !(s.isNullOrBlank())
+    }
+
     fun resetLayout() {     // 텍스트 입력한 거, 가게 선택한 거, 사진 선택한 거, 스피너 선택한 거, 녹음한 거 다 비우기!
 
     }
-}
 
+    fun postReview(sound: Sound) {
+        // 이미지 storage에 업로드
+        uploadImage(saveThings.imageURI)    // 저장해둔 이미지 URI
+        sound.imagePath = saveThings.imageFullpath
+
+        //음성파일 storage에 업로드
+        Log.d("Record", "audioURI initialized -> ${saveThings.audioURI}")
+        uploadAudio(saveThings.audioURI)
+        sound.audioPath = saveThings.audioFullpath
+
+        // 데이터베이스에 업로드
+        addItem(sound)      // firebase에 sound 정보 업로드
+    }
+
+
+}
