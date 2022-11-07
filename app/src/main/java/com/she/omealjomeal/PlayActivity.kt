@@ -1,22 +1,27 @@
 package com.she.omealjomeal
 
 import android.content.Intent
-import android.media.AudioManager
+import android.media.AudioAttributes
 import android.media.MediaPlayer
+import android.media.MediaPlayer.OnPreparedListener
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PowerManager
 import android.util.Log
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.she.omealjomeal.databinding.ActivityPlay2Binding
+import kotlinx.android.synthetic.main.activity_play.*
 import kotlinx.android.synthetic.main.activity_play2.view.*
 
 class PlayActivity : AppCompatActivity() {
+
+    private val TAG = "player"
 
     private val binding by lazy { ActivityPlay2Binding.inflate(layoutInflater) }
 
@@ -56,14 +61,24 @@ class PlayActivity : AppCompatActivity() {
                     audioUri = uri      // 녹음파일 uri 저장
                     Log.d("storage", "set audio uri -> ${audioUri != null}")
                     player = MediaPlayer().apply {
-                        setAudioStreamType(AudioManager.STREAM_MUSIC)
+                        setAudioAttributes(
+                            AudioAttributes.Builder()
+                                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                                .build()
+                        )
                         setDataSource(applicationContext, uri)     // lateinit property audioUri has not been initialized
-                        prepare()
+                        setWakeMode(applicationContext, PowerManager.PARTIAL_WAKE_LOCK)
+                        prepareAsync()
+                        var preparedListener: OnPreparedListener = OnPreparedListener { player ->
+                            Log.d(TAG, "OnPreparedListener called")
+                            startPlaying()
+                        }
+                        setOnPreparedListener(preparedListener)
+                        Log.d(TAG, "player prepared")
                     }
-                    Log.d("storage", "create player -> ${player != null}")
+                    Log.d(TAG, "player created -> ${player != null}")
                 }.addOnFailureListener {
-                    Log.e("storage", "download error => ${it.message}")
-                    Log.d("storage", "download error => ${it.message}")
+                    Log.e(TAG, "download error => ${it.message}")
                 }
             }
         }
@@ -78,9 +93,6 @@ class PlayActivity : AppCompatActivity() {
         }.addOnFailureListener {
             Log.d("TAG", "error=${it.message}")
         }
-
-
-
 
 
         // 가게이름 눌렀을 때 가게정보 화면으로 이동
@@ -107,7 +119,7 @@ class PlayActivity : AppCompatActivity() {
 
         // 재생, 일시정지 등 구현
 
-        startPlaying()  // 처음 화면 실행될 때 '재생'으로 시작
+
         binding.root.btnPlay3.setOnClickListener {  // 재생/일시정지 버튼 눌렀을 때
             when (state) {
                 State2.PLAY -> {
@@ -117,6 +129,30 @@ class PlayActivity : AppCompatActivity() {
                     startPlaying()
                 }
             }
+
+            /*object : Thread() {
+                var timeFormat = SimpleDateFormat("mm:ss")  //"분:초"를 나타낼 수 있도록 포멧팅
+                override fun run() {
+                    super.run()
+                    if (player == null)
+                        return
+                    binding.seekBar3.max = player.duration  // player.duration : 음악 총 시간
+                    while (player.isPlaying) {
+                        runOnUiThread {
+                            binding.seekBar3.progress = player.currentPosition
+                            binding.textCurrentTime.text = timeFormat.format(player.currentPosition)
+                        }
+                        SystemClock.sleep(200)
+                    }
+
+                    *//*1. 음악이 종료되면 자동으로 초기상태로 전환*//*
+                    if(!player.isPlaying){
+                        player.stop()      //음악 정지
+                        player.reset()
+                        seekBar.progress = 0
+                    }
+                }
+            }.start()*/
         }
     }
 
@@ -138,8 +174,10 @@ class PlayActivity : AppCompatActivity() {
     }*/
 
     fun startPlaying() {
+        Log.d(TAG, "startPlaying() called -> true")
         state = State2.PLAY
         player?.start()
+        Log.d(TAG, "player playing -> ${player?.isPlaying}")
     }
 
     fun stopPlaying() {

@@ -3,24 +3,23 @@ package com.she.omealjomeal
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
-import android.media.AudioManager
+import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PowerManager
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.viewbinding.ViewBinding
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.she.omealjomeal.databinding.ActivityPostReviewBinding
-
 import java.io.File
+
 
 class PostReview : AppCompatActivity() {
 
@@ -160,7 +159,6 @@ class PostReview : AppCompatActivity() {
     }
 
 
-
     private var recorder: MediaRecorder? = null
     private var player: MediaPlayer? = null
     private val recordingFilePath: String by lazy { "${externalCacheDir?.absolutePath}/recording.3gp"}  //외부저장소-고유영역-캐시
@@ -208,7 +206,7 @@ class PostReview : AppCompatActivity() {
     }
 
     fun startRecording() {
-        recorder = MediaRecorder().apply {
+        recorder = MediaRecorder(this).apply {
             setAudioSource(MediaRecorder.AudioSource.MIC)
             setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)   // 포멧?
             setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)      // 엔코더
@@ -221,9 +219,12 @@ class PostReview : AppCompatActivity() {
         state = State.ON_RECORDING      // state 변경
     }
 
+    var prepared = false
+
     fun stopRecording() {
         recorder?.run {
             stop()
+            reset()
             release()
         }
         recorder = null
@@ -232,15 +233,28 @@ class PostReview : AppCompatActivity() {
         Log.d("PostReview", "외부저장소 캐시에 파일 존재 -> ${externalCacheFile.isFile}")
         saveThings.audioURI = Uri.fromFile(File(recordingFilePath))
         player = MediaPlayer().apply {
-            setAudioStreamType(AudioManager.STREAM_MUSIC)
+            setAudioAttributes(
+                AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                    .build()
+            )
             setDataSource(applicationContext, saveThings.audioURI)
-            prepare()
+            setWakeMode(applicationContext, PowerManager.PARTIAL_WAKE_LOCK)
+            prepareAsync()
+            var preparedListener: MediaPlayer.OnPreparedListener = MediaPlayer.OnPreparedListener { player ->
+                Log.d(TAG, "OnPreparedListener called")
+                prepared = true
+            }
+            setOnPreparedListener(preparedListener)
         }
     }
 
-    fun playRecordedFile() {
-        state = State.ON_PLAYING
-        player?.start()
+    fun playRecordedFile() {    // prepare 완료되면 실행
+        Log.d(TAG, "$prepared")
+        if (prepared) {
+            state = State.ON_PLAYING
+            player?.start()
+        }
     }
 
     fun pauseRecordedFile() {
@@ -252,6 +266,7 @@ class PostReview : AppCompatActivity() {
         state = State.BEFORE_RECORDING
         externalCacheFile.delete()
         Log.d("PostReview", "외부저장소 캐시에 저장된 파일 삭제 -> 파일 존재 여부 ${externalCacheFile.isFile}")
+        player?.release()
         player = null
     }
 
