@@ -19,6 +19,8 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -37,6 +39,7 @@ class PostReview2 : AppCompatActivity() {
 
     val TAG = "PostReview"
     val TAG2 = "Record"
+    val TAG3 = "SaveInstance"
 
     val binding by lazy { ActivityPostReview2Binding.inflate(layoutInflater) }
     lateinit var context1: Context
@@ -45,24 +48,22 @@ class PostReview2 : AppCompatActivity() {
 
 
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(TAG3, "onCreate called -> true")
         setContentView(binding.root)
         context1 = binding.root.context
+
 
         setRecordFragment()
 
         var spinnerData = listOf("    ", "가족", "친구", "애인", "나 자신")
         var adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, spinnerData)
 
-
         binding.spinnerReview1.adapter = adapter
         binding.spinnerReview1.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
-
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 selectedValue = spinnerData[p2]
             }
@@ -74,9 +75,6 @@ class PostReview2 : AppCompatActivity() {
 
                 var sound = Sound()
 
-
-//                s.trim { it <= ' ' }.isEmpty() -> String에 공백만 있는지 확인하는 코드
-                
                 // 입력한 텍스트
                 sound.title = editTextTitle.text.toString()
                 sound.restaurantId = restaurantID?:""   // 가게선택 화면에서 restaurantId 넘겨받기
@@ -126,14 +124,14 @@ class PostReview2 : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-
         // 녹음파일 재생되고 있다면 stop
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
+    /*override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
         // 제목, review1, 2, 3, 선택한 사진 uri, 녹음파일? 저장
+        Log.d(TAG3, "onSaveInstanceState called -> true")
         outState.putString("title", binding.editTextTitle.text.toString())
         outState.putString("review1", selectedValue)
         outState.putString("review2", binding.editText1.text.toString())
@@ -143,13 +141,17 @@ class PostReview2 : AppCompatActivity() {
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
+        Log.d(TAG3, "onRestoreInstanceState called -> true")
         binding.editTextTitle.setText(savedInstanceState.getString("title"))
         binding.editText1.setText(savedInstanceState.getString("review2"))
         binding.editTextLongReview.setText(savedInstanceState.getString("review3"))
-    }
+    }*/
 
     override fun onResume() {
         super.onResume()
+
+        Log.d(TAG3, "onResume() called -> true")
+
         //가게 선택 후 돌아왔을 때 가게정보 표시
         if(intent.getStringExtra("from") == "SelectRestaurant") {
             restaurantID = intent.getStringExtra("restaurant").toString()
@@ -293,4 +295,6 @@ class PostReview2 : AppCompatActivity() {
         // 데이터베이스에 업로드
         addItem(sound)      // firebase에 sound 정보 업로드
     }
+
+
 }
