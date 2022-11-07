@@ -28,7 +28,8 @@ class SelectRestaurantActivity : AppCompatActivity() {
         lateinit var restaurantIdList: MutableList<String>
         restaurantRef.child("idList").get().addOnSuccessListener {
             Log.d("select", "list -> ${it.value.toString().split("/").toMutableList()}")
-            adapter.listRestaurantID = it.value.toString().split("/").toMutableList()   // 이거 mutable list로 바꿔야 함
+            adapter.listRestaurantID = it.value.toString().split("/").toMutableList()
+            adapter.filteredList = adapter.listRestaurantID
             Log.d("select", "adapter.listRestaurantID -> ${adapter.listRestaurantID}")
             binding.restaurantRecyclerView.adapter = adapter
             binding.restaurantRecyclerView.layoutManager = LinearLayoutManager(this)

@@ -32,6 +32,7 @@
             </intent-filter>
         </activity>
 
+
         <activity
             android:name=".RestaurantInfoActivity"
             android:exported="false" />
@@ -41,8 +42,6 @@
         <activity
             android:name=".PlaylistList"
             android:exported="true" />
-
-
 
 
         <activity
