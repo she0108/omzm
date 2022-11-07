@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:backgroundTint="#03A9F4"
+    tools:context=".PostReview2">
+
+    <LinearLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/imageButton6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            app:srcCompat="@drawable/play2" />
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="@color/none"
+            android:gravity="center"
+            android:text="리뷰 작성하기"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/imageButton4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            app:srcCompat="@drawable/play2" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/recordLayout"
+        android:layout_width="0dp"
+        android:layout_height="157dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </FrameLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/recordLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout">
+
+        <LinearLayout
+            android:id="@+id/reviewLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnComplete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:background="#00FFFFFF"
+                android:text="완료"
+                android:textColor="@color/black"
+                android:padding="0dp"
+                android:layout_margin="0dp"/>
+
+            <EditText
+                android:id="@+id/editTextTextPersonName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_blue_layout"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="소리의 제목을 입력해주세요"
+                android:inputType="textPersonName"
+                android:textColorHint="@color/darkgray"
+                android:paddingVertical="6dp"/>
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:text="내가 오늘 갔던 곳은..." />
+
+            <RelativeLayout
+                android:id="@+id/layoutRes"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="@drawable/round_blue_layout"
+                android:clickable="true">
+
+                <TextView
+                    android:id="@+id/textView20"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_centerInParent="true"
+                    android:text="가게 정보 입력하기" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layoutResSelected"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_centerInParent="true"
+                    android:visibility="invisible"
+                    tools:context=".RestaurantFragment">
+
+                    <ImageView
+                        android:id="@+id/imageRes"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginStart="24dp"
+                        android:src="@drawable/ic_launcher_background"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textResName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:text="가게 이름"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/textResAddress"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageRes"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textResAddress"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="32dp"
+                        android:text="가게 주소"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageRes"
+                        app:layout_constraintTop_toBottomOf="@+id/textResName" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:text="한 줄로 표현하면?" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginVertical="10dp">
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/ic_launcher_background"
+                    android:scaleType="centerCrop"
+                    tools:srcCompat="@tools:sample/avatars" />
+
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/text1" />
+
+                <TextView
+                    android:id="@+id/spin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/text1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="이곳은" />
+
+                <TextView
+                    android:id="@+id/text22"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/spinner"
+                    android:text="와/과 함께" />
+
+                <TextView
+                    android:id="@+id/text3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/editText1"
+                    android:layout_toEndOf="@id/editText1"
+                    android:text="곳이다." />
+
+
+                <EditText
+                    android:id="@+id/editText1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/text1"
+                    android:ems="10"
+                    android:inputType="textPersonName" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/round_blue_layout"
+                android:orientation="vertical"
+                android:layout_marginVertical="10dp">
+
+                <TextView
+                    android:id="@+id/textView19"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="텍스트 리뷰 작성하기"
+                    android:textSize="16sp"
+                    android:layout_margin="10dp"/>
+
+                <EditText
+                    android:id="@+id/editTextLongReview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/none"
+                    android:ems="10"
+                    android:hint="추가로 덧붙이고 싶은 말이 있나요? (선택)"
+                    android:inputType="textPersonName"
+                    android:layout_margin="10dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

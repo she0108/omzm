@@ -1,14 +1,13 @@
 package com.she.omealjomeal
 
-import android.annotation.SuppressLint
-import android.content.ContentProviderClient
 import android.location.LocationRequest
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Looper
 import android.widget.Toast
+import android.os.Looper
+import android.util.Log
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -17,14 +16,16 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.she.omealjomeal.databinding.ActivityGoogleMapsBinding
+import java.util.jar.Manifest
+import android.annotation.SuppressLint as SuppressLint1
 
 class GoogleMaps : AppCompatActivity(), OnMapReadyCallback {
 
     //AIzaSyBLMinRgnSUoTkIwLSoJ0Q-ZWVDCdSsmEY
 
-    lateinit var locationPermission: RuntimePermission<Array<String>>
+    lateinit var locationPermission: ActivityResultLauncher<Array<String>>
     private lateinit var mMap: GoogleMap
-    private lateinit var binding: ActivityGoogleMapsBinding
+
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
@@ -53,8 +54,8 @@ class GoogleMaps : AppCompatActivity(), OnMapReadyCallback {
         }
         locationPermission.launch(
             arrayOf(
-                Mainfest.permission.ACCES_COARSE_LOCATION,
-                Mainfest.permission.ACCESS_FINE_LOCATION
+                Manifest.permission.ACCES_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
             )
         )
     }
@@ -69,6 +70,13 @@ class GoogleMaps : AppCompatActivity(), OnMapReadyCallback {
      * installed Google Play services and returned to the app.
      */
 
+    locationPermmission.launch(
+    arrayOf(
+    Manifest.permission.ACCESS_COARSE_LOCATION,
+    Manifest.permission.ACCESS_FINE_LOCATION
+     )
+    )
+
     fun startProcess(){
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment as SupportMapFragment
@@ -79,14 +87,9 @@ class GoogleMaps : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         updateLocation()
-
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
     }
 
-    @SuppressLint("MissingPermission")
+    @SuppressLint1("MissingPermission")
     fun updateLocation(){
         val locationRequest = LocationRequest.create()
         locationRequest.run{

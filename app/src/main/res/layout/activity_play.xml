@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/player_view_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids=" artist_text_view,
+        cover_image_card_view, bottom_background_view,
+        player_seek_bar, play_time_text_view, total_time_text_view"
+        tools:visibility="visible" />
+
+    <View
+        android:id="@+id/top_background_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/bottom_background_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_weight="3" />
+
+    <View
+        android:id="@+id/bottom_background_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_background_view"
+        app:layout_constraintVertical_weight="2" />
+
+    <TextView
+        android:id="@+id/title_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="샴페인 따르는 소리"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/artist_text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="34dp"
+        android:clickable="true"
+        android:contextClickable="true"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/title_text_view"
+        tools:text="맛집이름" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cover_image_card_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginEnd="36dp"
+        android:translationY="30dp"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="10dp"
+        app:layout_constraintBottom_toBottomOf="@id/top_background_view"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/cover_image_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:srcCompat="@android:drawable/ic_menu_gallery"
+            tools:background="@color/purple_200" />
+    </androidx.cardview.widget.CardView>
+
+
+    <SeekBar
+        android:id="@+id/player_seek_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="5dp"
+        android:maxHeight="4dp"
+        android:minHeight="4dp"
+        android:paddingStart="0dp"
+        android:paddingEnd="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/play_control_image_view"
+        app:layout_constraintEnd_toEndOf="@+id/top_background_view"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/top_background_view"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintVertical_bias="0.495"
+        tools:progress="40" />
+
+    <TextView
+        android:id="@+id/play_time_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="568dp"
+        android:textColor="@color/purple_200"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/player_seek_bar"
+        app:layout_constraintTop_toBottomOf="@id/player_seek_bar"
+        tools:text="00:00" />
+
+    <TextView
+        android:id="@+id/total_time_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/player_seek_bar"
+        app:layout_constraintTop_toBottomOf="@id/player_seek_bar"
+        tools:text="00:00" />
+
+    <ImageView
+        android:id="@+id/play_control_image_view"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@android:drawable/ic_media_play"
+        app:tint="@color/black" />
+
+    <ImageView
+        android:id="@+id/skip_next_image_view"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="44dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.185"
+        app:layout_constraintStart_toEndOf="@id/play_control_image_view"
+        app:srcCompat="@android:drawable/ic_media_ff"
+        app:tint="@color/black" />
+
+    <ImageView
+        android:id="@+id/skip_prev_image_view"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="44dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/play_control_image_view"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@android:drawable/ic_media_rew"
+        app:tint="@color/black" />
+
+    <ImageView
+        android:id="@+id/play_list_image_view"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@android:drawable/btn_star"
+        app:tint="@color/black" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="19dp"
+        android:layout_marginTop="58dp"
+        android:layout_marginBottom="21dp"
+        android:text="user123"
+        app:layout_constraintBottom_toTopOf="@+id/cover_image_card_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/title_text_view"
+        app:layout_constraintVertical_bias="0.053"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="128dp"
+        android:layout_marginBottom="192dp"
+        android:text="#분위기 있는 #고급스러운"
+        app:layout_constraintBottom_toBottomOf="@+id/top_background_view"
+        app:layout_constraintEnd_toEndOf="@+id/top_background_view"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:clickable="true"
+        android:contextClickable="false"
+        android:text="맛집이름"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/top_background_view"
+        app:layout_constraintEnd_toEndOf="@+id/top_background_view"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="@+id/top_background_view"
+        app:layout_constraintTop_toBottomOf="@+id/title_text_view"
+        app:layout_constraintVertical_bias="0.006" />
+
+    <ImageButton
+        android:id="@+id/imageBut"
+        android:layout_width="169dp"
+        android:layout_height="170dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:srcCompat="@android:drawable/ic_menu_gallery"
+        tools:background="@color/purple_200" />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="350dp"
+        android:layout_height="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/play_control_image_view"
+        app:layout_constraintEnd_toStartOf="@+id/player_seek_bar"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="@+id/top_background_view"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintVertical_bias="0.397"
+        tools:progress="40" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0:00"
+        android:textColor="@color/purple_200"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/top_background_view"
+        app:layout_constraintEnd_toEndOf="@+id/seekBar"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/seekBar"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar"
+        app:layout_constraintVertical_bias="0.00999999" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0:00"
+        app:layout_constraintBottom_toBottomOf="@+id/top_background_view"
+        app:layout_constraintEnd_toEndOf="@+id/seekBar"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/seekBar"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar"
+        app:layout_constraintVertical_bias="0.00999999" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="173dp"
+        android:layout_height="176dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="@+id/top_background_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.449" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/skip_next_image_view"
+        app:layout_constraintTop_toBottomOf="@+id/textView5"
+        app:srcCompat="@android:drawable/ic_input_add" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
