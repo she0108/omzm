@@ -8,8 +8,8 @@ class Restaurant() {
     var id: String = ""
     var name: String = ""
     var imagePath: String = ""
-    var latitude: Float = 0.0F
-    var longitude: Float = 0.0F
+    var latitude: Double = 0.0
+    var longitude: Double = 0.0
     var address: String = ""
 
 }

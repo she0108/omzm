@@ -10,6 +10,7 @@ import android.os.PowerManager
 import android.util.Log
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.google.firebase.database.ktx.database
@@ -93,13 +94,25 @@ class PlayActivity : AppCompatActivity() {
             Log.d("TAG", "error=${it.message}")
         }
 
-        // 가게이름 눌렀을 때 가게정보 화면으로 이동
-        binding.textRestaurantName2.setOnClickListener {
-            Log.d("click", "textView3 clicked")
-            val intentRestaurant = Intent(this, MapsActivity::class.java)        // MapsActivity -> 가게정보 화면으로 수정
-            intentRestaurant.putExtra("restaurant", selectedRestaurantId)
-            this.startActivity(intentRestaurant)
+
+        restaurantRef.child(selectedRestaurantId?:"").get().addOnSuccessListener {
+            it.getValue(Restaurant::class.java)?.let { restaurant ->    // Restaurant 클래스로 가져오는 거 해보고 안되면 일일이 String으로...
+                binding.textRestaurantName2.text = restaurant.name
+
+                // 가게이름 눌렀을 때 가게정보 화면으로 이동
+                binding.textRestaurantName2.setOnClickListener {
+                    Log.d("click", "textView3 clicked")
+                    val intentRestaurant = Intent(this, MapsActivity::class.java)        // MapsActivity -> 가게정보 화면으로 수정
+                    intentRestaurant.putExtra("latitude", restaurant.latitude)
+                    intentRestaurant.putExtra("longitude", restaurant.longitude)
+                    this.startActivity(intentRestaurant)
+                }
+            }
+        }.addOnFailureListener {
+            Log.d("TAG", "error=${it.message}")
         }
+
+
 
         // 사진 눌렀을 때 리뷰 창 visible, clickable
         binding.imageSound2.setOnClickListener {
