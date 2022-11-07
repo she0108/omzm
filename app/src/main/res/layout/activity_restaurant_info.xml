@@ -1,90 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".RestaurantInfoActivity">
 
-    <Button
-        android:id="@+id/Mapbutton"
-        android:layout_width="0dp"
-        android:layout_height="150dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
-        android:text="지도 보기"
+    <LinearLayout
+        android:id="@+id/topLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:background="@color/skyblue"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textAddress2"
-        app:strokeColor="#FF9800" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="139dp"
-        android:layout_height="32dp"
-        android:text="Main menu"
-        android:textSize="20sp"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="365dp" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="153dp"
-        android:layout_height="170dp"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="409dp"
-        tools:srcCompat="@tools:sample/backgrounds/scenic" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="60dp"
-        android:layout_height="24dp"
-        android:text="sample1"
-        android:textSize="14sp"
-        tools:layout_editor_absoluteX="241dp"
-        tools:layout_editor_absoluteY="499dp" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="409dp"
-        android:layout_height="16dp"
-        android:text="---------------------------------------------------------------------------------------------------------------------------------------------------------"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="340dp" />
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="169dp"
-        android:layout_height="150dp"
-        app:srcCompat="@drawable/ic_launcher_background"
-        tools:layout_editor_absoluteX="6dp"
-        tools:layout_editor_absoluteY="565dp" />
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="sample2"
-        tools:layout_editor_absoluteX="211dp"
-        tools:layout_editor_absoluteY="597dp" />
-
-    <FrameLayout
-        android:id="@+id/frameLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/skyblue"
-        android:foregroundGravity="center_vertical|center_horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/imageButton4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left|center_vertical"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/play2" />
+            android:id="@+id/imageButton6"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="right|center_vertical"
+            android:layout_margin="10dp"
+            android:background="@color/none"
+            app:srcCompat="@drawable/ic_arrow_left" />
 
         <TextView
             android:id="@+id/textView13"
@@ -94,37 +36,54 @@
             android:layout_weight="1"
             android:background="@color/none"
             android:gravity="center"
-            android:text="TextView"
-            android:textSize="30sp"
+            android:text="가게 이름"
+            android:textColor="@color/black"
+            android:textSize="20sp"
             android:textStyle="bold" />
-    </FrameLayout>
+
+        <ImageButton
+            android:id="@+id/imageButton4"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="left|center_vertical"
+            android:layout_margin="10dp"
+            android:background="@color/none"
+            app:srcCompat="@drawable/ic_more_vertical" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textView14"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
-        android:text="위치"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/textAddress2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+        android:layout_margin="24px"
+        android:text="TextView" />
 
     <TextView
-        android:id="@+id/textAddress2"
-        android:layout_width="0dp"
+        android:id="@+id/textView17"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:text="주소"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/Mapbutton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+        android:layout_margin="24px"
+        android:text="TextView" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_margin="24px"
+        app:srcCompat="@drawable/round_blue_layout" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="30dp"
+        app:srcCompat="@drawable/line" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+</LinearLayout>
