@@ -9,6 +9,9 @@ import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.InputFilter
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.View.INVISIBLE
@@ -97,6 +100,26 @@ class PostReview2 : AppCompatActivity() {
                 resetLayout()
             }
         }
+
+        //호준-이게 글자수 확인
+        binding.editText1.addTextChangedListener(object : TextWatcher {
+            // addTextChangedListener 텍스트가 입력에 따라 변경될 때마다 확인하는 기능
+            // TextWatcher 텍스트가 변경될 때마다 발생하는 이벤트 처리하는 인터페이스
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                val filter = arrayOfNulls<InputFilter>(1)
+                filter[0] = InputFilter.LengthFilter(80)
+                // 쓸 수 있는 글자 수 최대 80자로 제한
+                binding.editText1.filters = filter
+                val currentBytes = s.toString().toByteArray().size // 텍스트 내용을 받아와서 바이트 수를 가져온다.
+                val txt = "$currentBytes / 80 바이트"
+                binding.byteConfirm.setText(txt) // 텍스트뷰에 현재 바이트수 표시
+            }
+
+            override fun afterTextChanged(s: Editable) {}
+        })
+
+
 
 
         //
