@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="130dp"
     tools:context=".RecordFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -22,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/textViewStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="7dp"
@@ -30,24 +30,24 @@
         android:text="0:00"
         android:textColor="@color/skyblue"
         android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/textView9"
+        app:layout_constraintEnd_toStartOf="@+id/textViewTotal"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/seekBar2" />
 
-    <TextView
-        android:id="@+id/textView8"
+    <com.she.omealjomeal.CountUpView
+        android:id="@+id/textCountup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:text="0:00"
-        app:layout_constraintBottom_toTopOf="@+id/recordButton"
+        app:layout_constraintBottom_toTopOf="@+id/btnRecord2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/seekBar2" />
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/textViewTotal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
@@ -57,41 +57,41 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView7"
+        app:layout_constraintStart_toEndOf="@+id/textViewStart"
         app:layout_constraintTop_toBottomOf="@+id/seekBar2" />
 
     <com.she.omealjomeal.RecordButton
-        android:id="@+id/recordButton"
+        android:id="@+id/btnRecord2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:background="@color/none"
         android:src="@drawable/play2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintTop_toBottomOf="@+id/textCountup" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/btnClear2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:background="@color/none"
-        android:src="@drawable/stop"
+        android:src="@drawable/ic_delete"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/recordButton"
+        app:layout_constraintEnd_toStartOf="@+id/btnRecord2"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/btnCheck2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:background="@color/none"
-        android:src="@drawable/stop"
+        android:src="@drawable/ic_check"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/recordButton" />
+        app:layout_constraintStart_toEndOf="@+id/btnRecord2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

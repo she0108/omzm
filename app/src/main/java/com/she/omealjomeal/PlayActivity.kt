@@ -46,6 +46,9 @@ class PlayActivity : AppCompatActivity() {
             it.getValue(Sound::class.java)?.let { sound ->
                 binding.textSoundTitle.text = sound.title     //  sound title
                 binding.textUserName.text = sound.userName     // sound userName
+                binding.textOneLineReview.text = "이곳은 " + sound.review1 + "와/과 함께 " + sound.review2 + " 곳이다."
+//                binding.textView23.text = 해시태그!
+                binding.textView22.text = sound.review3
 
                 // soundImage2 설정
                 storage.getReference(sound.imagePath).downloadUrl.addOnSuccessListener { uri ->
