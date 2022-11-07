@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.sound_recycler.view.*
 
 
 class RestaurantRecyclerAdapter: RecyclerView.Adapter<RestaurantRecyclerAdapter.RestaurantRecyclerHolder>() {
+
     var listRestaurantID = mutableListOf<String>()
     var filteredList = listRestaurantID     // 일단 전체리스트 복사
     var map_name_id = mutableMapOf<String, String>()
@@ -70,6 +71,7 @@ class RestaurantRecyclerAdapter: RecyclerView.Adapter<RestaurantRecyclerAdapter.
                 val intentRestaurant = Intent(context, PostReview2::class.java)
                 intentRestaurant.putExtra("restaurant", restaurantS_id)
                 intentRestaurant.putExtra("from", "SelectRestaurant")
+                intentRestaurant.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 context.startActivity(intentRestaurant)
             }
         }

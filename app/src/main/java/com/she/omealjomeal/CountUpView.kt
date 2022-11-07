@@ -20,12 +20,14 @@ class CountUpView(context: Context, attributeSet: AttributeSet? = null): AppComp
     }
 
     fun startCountup() {
+        visibility = VISIBLE
         startTimeStamp = SystemClock.elapsedRealtime()
         handler?.post(countUpAction)
     }
 
     fun stopCountup() {
         handler?.removeCallbacks(countUpAction)
+        visibility = INVISIBLE
     }
 
     fun clearCountTime() {

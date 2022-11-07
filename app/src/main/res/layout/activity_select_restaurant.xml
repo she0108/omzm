@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:gravity="fill_vertical"
     android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/topLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/scrollView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,10 +20,9 @@
 
         <ImageButton
             android:id="@+id/imageButton6"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_gravity="right|center_vertical"
-            android:layout_margin="10dp"
             android:background="@color/none"
             app:srcCompat="@drawable/ic_arrow_left" />
 
@@ -41,10 +40,9 @@
 
         <ImageButton
             android:id="@+id/imageButton4"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_gravity="left|center_vertical"
-            android:layout_margin="10dp"
             android:background="@color/none"
             app:srcCompat="@drawable/ic_more_vertical" />
 
@@ -52,9 +50,11 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="300dp"
+        android:layout_gravity="center_vertical"
         android:layout_marginHorizontal="15dp"
         android:layout_marginBottom="15dp"
+        android:layout_weight="1"
         android:background="@drawable/round_bounded_gray">
 
 
@@ -80,6 +80,7 @@
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/round_white_layout"
                 android:iconifiedByDefault="false"
+                android:imeOptions="actionDone|actionSearch"
                 android:queryBackground="@color/none"
                 app:layout_constraintBottom_toTopOf="@+id/textView11"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -138,5 +139,57 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="end"
+        android:background="@color/beige"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@color/none"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/ic_home" />
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@color/none"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/ic_search__normal_" />
+
+        <ImageButton
+            android:id="@+id/imageButton7"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@color/none"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/ic_pencil" />
+
+        <ImageButton
+            android:id="@+id/imageButton10"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@color/none"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/ic_person" />
+    </LinearLayout>
 
 </LinearLayout>

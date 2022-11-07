@@ -1,5 +1,6 @@
 package com.she.omealjomeal
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -38,6 +39,13 @@ class SoundList : AppCompatActivity() {
 
         //AlbumFragment
         setFragment(selectedPlaylist)
+
+        // 하단 탭 버튼 -> 리뷰 작성 화면으로
+        binding.imageButton7.setOnClickListener {
+            val intent = Intent(this, PostReview2::class.java)
+            intent.putExtra("from", "other")
+            this.startActivity(intent)
+        }
     }
 
 

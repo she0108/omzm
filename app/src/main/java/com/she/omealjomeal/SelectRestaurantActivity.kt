@@ -1,5 +1,6 @@
 package com.she.omealjomeal
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextWatcher
@@ -28,7 +29,8 @@ class SelectRestaurantActivity : AppCompatActivity() {
         lateinit var restaurantIdList: MutableList<String>
         restaurantRef.child("idList").get().addOnSuccessListener {
             Log.d("select", "list -> ${it.value.toString().split("/").toMutableList()}")
-            adapter.listRestaurantID = it.value.toString().split("/").toMutableList()   // 이거 mutable list로 바꿔야 함
+            adapter.listRestaurantID = it.value.toString().split("/").toMutableList()
+            adapter.filteredList = adapter.listRestaurantID
             Log.d("select", "adapter.listRestaurantID -> ${adapter.listRestaurantID}")
             binding.restaurantRecyclerView.adapter = adapter
             binding.restaurantRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -64,5 +66,12 @@ class SelectRestaurantActivity : AppCompatActivity() {
 //        returnIntent.putExtra("returnValue", binding.editMessage.text.toString())
 //        setResult(RESULT_OK, returnIntent)
 //        finish()
+
+        // 하단 탭 버튼 -> (마이페이지) 플레이리스트 화면으로
+        binding.imageButton10.setOnClickListener {
+            val intent = Intent(this, PlaylistList::class.java)
+            intent.putExtra("from", "other")
+            this.startActivity(intent)
+        }
     }
 }
