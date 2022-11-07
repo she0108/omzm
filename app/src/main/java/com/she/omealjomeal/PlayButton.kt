@@ -12,10 +12,10 @@ class PlayButton(context: Context, attrs: AttributeSet): AppCompatImageButton(co
     fun updateIconWithState(state: State2) {
         when (state) {
             State2.PLAY -> {
-                setImageResource(R.drawable.record)
+                setImageResource(R.drawable.pause)
             }
             State2.PAUSE -> {
-                setImageResource(R.drawable.stop)
+                setImageResource(R.drawable.play2)
             }
         }
     }
