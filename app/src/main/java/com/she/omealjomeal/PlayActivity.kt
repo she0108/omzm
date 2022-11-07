@@ -86,17 +86,12 @@ class PlayActivity : AppCompatActivity() {
             }
         }
 
-
-
-
-
         // restaurant 관련된 부분
         restaurantRef.child(selectedRestaurantId?:"").child("name").get().addOnSuccessListener {
             binding.textRestaurantName2.text = it.value.toString()
         }.addOnFailureListener {
             Log.d("TAG", "error=${it.message}")
         }
-
 
         // 가게이름 눌렀을 때 가게정보 화면으로 이동
         binding.textRestaurantName2.setOnClickListener {
@@ -121,8 +116,6 @@ class PlayActivity : AppCompatActivity() {
         }
 
         // 재생, 일시정지 등 구현
-
-
         binding.root.btnPlay3.setOnClickListener {  // 재생/일시정지 버튼 눌렀을 때
             when (state) {
                 State2.PLAY -> {
@@ -156,6 +149,13 @@ class PlayActivity : AppCompatActivity() {
                     }
                 }
             }.start()*/
+        }
+
+        // 하단 탭 버튼 -> 리뷰 작성 화면으로
+        binding.imageButton7.setOnClickListener {
+            val intent = Intent(this, PostReview2::class.java)
+            intent.putExtra("from", "other")            // selectedPlaylist에 선택한 것 말고 다른, 아예 목록에도 없는 Playlist instance가 전달됨. 왜?
+            this.startActivity(intent)
         }
     }
 

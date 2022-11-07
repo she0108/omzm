@@ -1,5 +1,6 @@
 package com.she.omealjomeal
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextWatcher
@@ -65,5 +66,12 @@ class SelectRestaurantActivity : AppCompatActivity() {
 //        returnIntent.putExtra("returnValue", binding.editMessage.text.toString())
 //        setResult(RESULT_OK, returnIntent)
 //        finish()
+
+        // 하단 탭 버튼 -> (마이페이지) 플레이리스트 화면으로
+        binding.imageButton10.setOnClickListener {
+            val intent = Intent(this, PlaylistList::class.java)
+            intent.putExtra("from", "other")
+            this.startActivity(intent)
+        }
     }
 }
