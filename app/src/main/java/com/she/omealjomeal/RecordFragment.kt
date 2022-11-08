@@ -1,5 +1,6 @@
 package com.she.omealjomeal
 
+import android.Manifest
 import android.content.pm.PackageManager
 import android.media.AudioAttributes
 import android.media.MediaPlayer
@@ -16,6 +17,7 @@ import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import com.she.omealjomeal.databinding.FragmentRecordBinding
 import java.io.File
 
@@ -37,11 +39,33 @@ class RecordFragment : Fragment() {
     ): View? {
         binding = FragmentRecordBinding.inflate(inflater, container, false)   //프래그먼트 바인딩
 
+        if (SaveThings.saveAudioFile?.isFile()?:false) {  // 녹음 후
+            state = State.AFTER_RECORDING
+            player = MediaPlayer().apply {
+                setAudioAttributes(
+                    AudioAttributes.Builder()
+                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                        .build()
+                )
+                setDataSource(requireContext().applicationContext, Uri.fromFile(recordedFile))  // 재생에 필요한 uri
+                setWakeMode(requireContext().applicationContext, PowerManager.PARTIAL_WAKE_LOCK)
+                prepareAsync()
+                var preparedListener: MediaPlayer.OnPreparedListener = MediaPlayer.OnPreparedListener { player ->
+                    Log.d("Record", "OnPreparedListener called")
+                }
+                setOnPreparedListener(preparedListener)
+            }
+        }
+
+        if (PostReview2.saveThings.audioFile?.isFile()?:false) {  // 체크 후
+            check = Check.AFTER_CHECK
+            PostReview2.saveThings.audioRecorded = true
+        }
 
         binding.btnRecord2.setOnClickListener {
             when (state) {
                 State.BEFORE_RECORDING -> { // 녹음 시작.
-                    requestAudioPermission()    // 권한 요청 띄우는 거 -> 수락하면 startRecording -> startCountup, state = ON_RECORDING
+                    permissionLauncher_record.launch(permissions)    // 권한 요청 띄우는 거 -> 수락하면 startRecording -> startCountup, state = ON_RECORDING
                 }
                 State.ON_RECORDING -> { // 녹음 완료
                     stopRecording()
@@ -63,17 +87,26 @@ class RecordFragment : Fragment() {
             // check 버튼 누른 뒤에는 clear, check 버튼을 없애야 하는데 그럼 state 외에 다른 변수 하나 더 필요함.
             checkRecordedFile()
         }
-
         return binding.root
     }
 
+    // 외부저장소 쓰는 권한은 필요없으면 뺄 것
+    val permissions = arrayOf(Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
+    val permissionLauncher_record = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { resultMap ->
+        val isAllGranted = permissions.all { e -> resultMap[e] == true }
+
+        if (isAllGranted) {
+            startRecording()
+        } else {
+            Toast.makeText(requireContext(), "음성녹음 기능을 사용하려면 모든 권한을 승인해야 합니다.", Toast.LENGTH_LONG).show()
+        }
+    }
 
     private var recorder: MediaRecorder? = null
     private var player: MediaPlayer? = null
-    private val recordingFilePath: String by lazy { "${requireContext().externalCacheDir?.absolutePath}/recording.3gp"}  //외부저장소-고유영역-캐시
-    val externalCacheFile by lazy { File(requireContext().externalCacheDir, "recording.3gp") }
-
-    private val requiredPermissions = arrayOf(android.Manifest.permission.RECORD_AUDIO)
+    private val recordingFilePath: String by lazy { "${requireContext().filesDir.absolutePath}/recording.3gp"}  //외부저장소-고유영역-캐시
+    val recordedFile by lazy { File(requireContext().filesDir, "recording.3gp") }
 
     private var check = Check.BEFORE_CHECK      // 녹음파일 확정 전/후
     private var state = State.BEFORE_RECORDING  // 녹음전/녹음중/녹음후/재생중
@@ -86,11 +119,9 @@ class RecordFragment : Fragment() {
 
     companion object { const val REQUEST_RECORD_AUDIO_PERMISSION = 201 }
 
-    fun requestAudioPermission() {
-        requestPermissions(requiredPermissions, REQUEST_RECORD_AUDIO_PERMISSION)
-    }
 
-    override fun onRequestPermissionsResult(
+
+/*    override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
@@ -103,15 +134,15 @@ class RecordFragment : Fragment() {
         else {
             startRecording()    // 권한 요청 -> 한번만 수락하면 오류 나는데 그냥 수락하니까 오류 안 남 (?)
         }
-    }
+    }*/
 
     fun startRecording() {
         recorder = MediaRecorder(requireContext()).apply {
             setAudioSource(MediaRecorder.AudioSource.MIC)
             setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)   // 포멧?
             setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)      // 엔코더
-            setOutputFile(recordingFilePath)    //캐시에 저장?
-            Log.d("Record", "${requireContext().externalCacheDir?.absolutePath}/recording.3gp") // 앞에가 파일 경로, recording.3gp가 파일명
+            setOutputFile(recordingFilePath)
+            Log.d("Record", "${requireContext().filesDir}/recording.3gp") // 앞에가 파일 경로, recording.3gp가 파일명
             prepare()
         }
         recorder?.start()       // 녹음기 실행
@@ -128,15 +159,15 @@ class RecordFragment : Fragment() {
         recorder = null
         binding.textCountup.stopCountup()    // 녹음 시간 저장해야 됨
         state = State.AFTER_RECORDING
-        Log.d("Record", "외부저장소 캐시에 파일 존재 -> ${externalCacheFile.isFile}")
-        PostReview2.saveThings.audioURI = Uri.fromFile(File(recordingFilePath))
+        Log.d("Record", "외부저장소 캐시에 파일 존재 -> ${recordedFile.isFile}")
+        SaveThings.saveAudioFile = recordedFile
         player = MediaPlayer().apply {
             setAudioAttributes(
                 AudioAttributes.Builder()
                     .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                     .build()
             )
-            setDataSource(requireContext().applicationContext, PostReview2.saveThings.audioURI)
+            setDataSource(requireContext().applicationContext, Uri.fromFile(recordedFile))  // 재생에 필요한 uri
             setWakeMode(requireContext().applicationContext, PowerManager.PARTIAL_WAKE_LOCK)
             prepareAsync()
             var preparedListener: MediaPlayer.OnPreparedListener = MediaPlayer.OnPreparedListener { player ->
@@ -160,8 +191,9 @@ class RecordFragment : Fragment() {
 
     fun clearRecordedFile() {
         state = State.BEFORE_RECORDING
-        externalCacheFile.delete()
-        Log.d("Record", "clearRecordedFile() called, 외부저장소 캐시에 저장된 파일 삭제 -> 파일 존재 여부 ${externalCacheFile.isFile}")
+        recordedFile.delete()
+        Log.d("Record", "clearRecordedFile() called, 외부저장소 캐시에 저장된 파일 삭제 -> 파일 존재 여부 ${recordedFile.isFile}")
+//        SaveThings.saveAudio = null
         player?.stop()
         player?.release()
         player = null
@@ -172,6 +204,7 @@ class RecordFragment : Fragment() {
         check = Check.AFTER_CHECK
         state = state
         Log.d("Record", "checkRecordedFile() called")
+        PostReview2.saveThings.audioFile = recordedFile
         PostReview2.saveThings.audioRecorded = true
     }
 

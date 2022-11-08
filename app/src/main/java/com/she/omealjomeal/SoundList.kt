@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.database.ktx.database
@@ -25,36 +26,48 @@ class SoundList : AppCompatActivity() {
         val binding by lazy { ActivitySoundListBinding.inflate(layoutInflater) }
         setContentView(binding.root)
 
-        val selectedPlaylist = intent.getParcelableExtra<Playlist>("playlist")  // PlaylistList에서 선택된 playlist 전달받음 -> playlist.soundIdList에서 sound id 목록 받아오기
-        Log.d(TAG, "Playlist instance 전달 - ${selectedPlaylist}")                // 플레이리스트 홀더에서 정의한 intent_playlist가 여기서 접근이 안 됨
-        Log.d(TAG, "selectedPlaylist.soundIdList -> ${selectedPlaylist?.soundIdList}")
+        val selectedPlaylistId = intent.getStringExtra("playlist")  // PlaylistList에서 선택된 playlist 전달받음 -> playlist.soundIdList에서 sound id 목록 받아오기
 
 
-        val data: MutableList<String> = selectedPlaylist?.soundIdList?:mutableListOf()
-        Log.d(TAG, "data에 soundIdList 저장 - ${data}")
+
+
         var adapter = SoundRecyclerAdapter()
-        adapter.listSoundID = data    // 어댑터의 listSound에 방금 불러온 data
+
+        val database = Firebase.database("https://omzm-84564-default-rtdb.asia-southeast1.firebasedatabase.app/")   // (realtime database)
+        val playlistRef = database.getReference("playlists")
+
+        playlistRef.child(selectedPlaylistId?:"").get().addOnSuccessListener {
+            it.getValue(Playlist::class.java)?.let { playlist ->
+                adapter.listSoundID = playlist.soundIdList.toString().split("/").toMutableList()
+                setFragment(playlist)   //AlbumFragment
+            }
+        }.addOnFailureListener {
+            Toast.makeText(baseContext, "네크워크 상태를 확인해주세요.", Toast.LENGTH_SHORT).show()
+            Log.d("TAG", "error=${it.message}")
+        }
+
         binding.soundRecyclerView.adapter = adapter
         binding.soundRecyclerView.layoutManager = LinearLayoutManager(this) // 레이아웃 매니저: 리사이클러뷰를 화면에 보여주는 형태 결정
 
-        //AlbumFragment
-        setFragment(selectedPlaylist)
+
+
 
         // 하단 탭 버튼 -> 리뷰 작성 화면으로
         binding.imageButton7.setOnClickListener {
             val intent = Intent(this, PostReview2::class.java)
             intent.putExtra("from", "other")
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             this.startActivity(intent)
         }
     }
 
 
-    fun setFragment(playlist: Playlist? = null) {
+    fun setFragment(playlist: Playlist) {
         val albumFragment = AlbumFragment()
         var bundle = Bundle()
-        bundle.putString("title", playlist?.title)
-        bundle.putString("userName", playlist?.userName)
-        bundle.putString("imagePath", playlist?.imagePath)
+        bundle.putString("title", playlist.title)
+        bundle.putString("userName", playlist.userName)
+        bundle.putString("imagePath", playlist.imagePath)
         albumFragment.arguments = bundle
         val transaction = supportFragmentManager.beginTransaction()
         transaction.add(R.id.fragmentView, albumFragment)

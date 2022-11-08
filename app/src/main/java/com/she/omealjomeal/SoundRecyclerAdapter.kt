@@ -8,14 +8,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import com.she.omealjomeal.Sound
 import com.she.omealjomeal.databinding.SoundRecyclerBinding
 import kotlinx.android.synthetic.main.sound_recycler.view.*
 

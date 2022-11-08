@@ -5,38 +5,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/white"><![CDATA[
     tools:layout_editor_absoluteX="-1dp"
     tools:layout_editor_absoluteY="-9dp">
 
-    <ImageButton
-        android:id="@+id/imageButton5"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:background="@color/none"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_more_vertical" />
+    ]]>
 
-    <ImageButton
-        android:id="@+id/imageButton3"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@color/none"
+    <LinearLayout
+        android:id="@+id/topLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/fragmentView"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_arrow_left" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/imageButton61"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="right|center_vertical"
+            android:background="@color/none"
+            app:srcCompat="@drawable/ic_arrow_left" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/imageButton87"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="left|center_vertical"
+            android:background="@color/none"
+            app:srcCompat="@drawable/ic_more_vertical" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textRestaurantName2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:layout_marginEnd="72dp"
         android:clickable="true"
-        android:ellipsize="marquee"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:text="textRestaurantName"
         android:textColor="@color/black"
         android:textSize="15sp"
@@ -50,8 +66,13 @@
         android:id="@+id/textSoundTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
         android:layout_marginTop="32dp"
+        android:layout_marginEnd="64dp"
         android:ellipsize="marquee"
+        android:focusable="auto"
+        android:focusableInTouchMode="true"
+        android:singleLine="true"
         android:text="textSoundTitle"
         android:textColor="@color/black"
         android:textSize="24sp"
@@ -67,6 +88,10 @@
         android:id="@+id/textUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginEnd="80dp"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:text="textUserName"
         android:textColor="@color/skyblue"
         android:textSize="12sp"
@@ -175,10 +200,15 @@
         android:id="@+id/textOneLineReview"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginEnd="45dp"
         android:layout_marginBottom="16dp"
+        android:ellipsize="marquee"
+        android:focusable="auto"
+        android:focusableInTouchMode="true"
+        android:focusedByDefault="true"
         android:gravity="center"
+        android:singleLine="true"
         android:text="이곳은 친구와 함께 활발하게 놀기 좋은 곳이다"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/seekBar3"
