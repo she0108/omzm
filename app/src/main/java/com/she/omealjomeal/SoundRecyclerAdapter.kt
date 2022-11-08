@@ -5,6 +5,7 @@ import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.database.DataSnapshot
@@ -80,6 +81,7 @@ class SoundRecyclerAdapter: RecyclerView.Adapter<SoundRecyclerAdapter.SoundRecyc
 
                 }
             }.addOnFailureListener {
+                Toast.makeText(context, "네크워크 상태를 확인해주세요.", Toast.LENGTH_SHORT).show()
                 Log.d("TAG", "error=${it.message}")
             }
 

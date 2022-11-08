@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filterable
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.database.ktx.database
@@ -87,6 +88,7 @@ class RestaurantRecyclerAdapter: RecyclerView.Adapter<RestaurantRecyclerAdapter.
                     map_name_id.put(restaurant.name, restaurantID)
                 }
             }.addOnFailureListener {
+                Toast.makeText(context, "네크워크 상태를 확인해주세요.", Toast.LENGTH_SHORT).show()
                 Log.d("TAG", "error=${it.message}")
             }
         }

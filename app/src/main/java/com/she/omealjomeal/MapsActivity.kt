@@ -41,8 +41,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
+        val latitude = intent.getDoubleExtra("latitude", 0.0)
+        val longitude = intent.getDoubleExtra("longitude", 0.0)
+
         // Add a marker in Sydney and move the camera
-        val yUn = LatLng(37.383376, 126.671190)
+        val yUn = LatLng(latitude, longitude)
         /* val markerOptions=MarkerOptions()
             .position(sydney)
             .title("Sydney")

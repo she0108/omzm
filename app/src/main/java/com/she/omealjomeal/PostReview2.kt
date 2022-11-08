@@ -49,13 +49,12 @@ class PostReview2 : AppCompatActivity() {
     var restaurantID: String? = null
     lateinit var selectedValue: String
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG3, "onCreate called -> true")
         setContentView(binding.root)
         context1 = binding.root.context
+
 
 
         setRecordFragment()
@@ -71,6 +70,7 @@ class PostReview2 : AppCompatActivity() {
                 selectedValue = spinnerData[p2]
             }
         }
+
 
         // 입력완료 버튼 클릭 > 입력한 텍스트 데이터베이스에 업로드 (realtime database)
         with(binding) {
@@ -92,12 +92,16 @@ class PostReview2 : AppCompatActivity() {
 
                 if (textInput && resSelected && imageSelected && saveThings.audioRecorded) {
                     postReview(sound)
+                    // 업로드 성공적 -> Toast 메시지 같은 거 띄우고 화면 초기화
+                    if (saveThings.uploadSuccess) {
+                        Toast.makeText(baseContext, "리뷰 업로드가 완료되었습니다.", Toast.LENGTH_LONG).show()
+                        resetLayout()
+                    } else {
+                        Toast.makeText(baseContext, "리뷰 업로드에 실패했습니다. 네트워크 연결 상이ㅏ태 확인 후 다시 시도해주세요.", Toast.LENGTH_LONG).show()
+                    }
                 } else {
                     Toast.makeText(baseContext, "제목, 가게정보, 사진 ... 을 모두 등록해야 리뷰를 작성할 수 있습니다.", Toast.LENGTH_LONG).show()
                 }
-
-                // 업로드 성공적 -> Toast 메시지 같은 거 띄우고 화면 초기화
-                resetLayout()
             }
         }
 
@@ -150,7 +154,7 @@ class PostReview2 : AppCompatActivity() {
         // 녹음파일 재생되고 있다면 stop
     }
 
-    /*override fun onSaveInstanceState(outState: Bundle) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
         // 제목, review1, 2, 3, 선택한 사진 uri, 녹음파일? 저장
@@ -159,16 +163,19 @@ class PostReview2 : AppCompatActivity() {
         outState.putString("review1", selectedValue)
         outState.putString("review2", binding.editText1.text.toString())
         outState.putString("review3", binding.editTextLongReview.text.toString())
+        outState.putBoolean("recorded", externalCacheFile.isFile())
         // putURI는 없는데 imageUri는 어떻게 보관하지?
     }
 
+/*
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         Log.d(TAG3, "onRestoreInstanceState called -> true")
         binding.editTextTitle.setText(savedInstanceState.getString("title"))
         binding.editText1.setText(savedInstanceState.getString("review2"))
         binding.editTextLongReview.setText(savedInstanceState.getString("review3"))
-    }*/
+    }
+*/
 
     override fun onResume() {
         super.onResume()
@@ -205,6 +212,7 @@ class PostReview2 : AppCompatActivity() {
         lateinit var audioURI: Uri
         lateinit var audioFullpath: String
         var audioRecorded = false
+        var uploadSuccess = true
     }
 
     // Sound 데이터를 노드에 입력하는 함수 (realtime database)
@@ -212,7 +220,10 @@ class PostReview2 : AppCompatActivity() {
         Log.d(TAG, "addItem() called -> true")
         val id = soundRef.push().key!!
         sound.id = id
-        soundRef.child(id).setValue(sound)
+        soundRef.child(id).setValue(sound).addOnFailureListener {
+            saveThings.uploadSuccess = false
+            Log.d("Upload", "addItem Failed")
+        }
     }
 
     // 외부저장소 권한 요청 팝업 띄우고 갤러리 여는 함수 (storage - image)
@@ -245,9 +256,10 @@ class PostReview2 : AppCompatActivity() {
         val uploadTask = imageRef.putFile(uri)
 
         uploadTask.addOnFailureListener {
-            Log.d(TAG, "실패 => ${it.message}")
+            saveThings.uploadSuccess = false
+            Log.d("Upload", "이미지 업로드 실패 => ${it.message}")
         }.addOnSuccessListener { taskSnapshot ->
-            Log.d(TAG, "성공 주소 => ${fullPath}")    // 이미지 다운로드할 때 이 주소(fullPath) 사용 => fullPath를 Sound 프로퍼티로 데이터베이스에 저장할 것.
+            Log.d("Upload", "이미지 업로드 성공 주소 => ${fullPath}")    // 이미지 다운로드할 때 이 주소(fullPath) 사용 => fullPath를 Sound 프로퍼티로 데이터베이스에 저장할 것.
         }
     }
     // 경로, 사용자ID, 확장자를 조합해서 파일의 전체경로(주소)를 생성하는 함수. 이 주소는 storage에서 해당 이미지를 다시 불러올 때 사용됨.
@@ -269,11 +281,20 @@ class PostReview2 : AppCompatActivity() {
     }
 
     // Record Fragment + 녹음&재생 기능
+
+
     fun setRecordFragment() {
         Log.d(TAG2, "setRecordFragment()")
         val recordFragment = RecordFragment()
         val transaction = supportFragmentManager.beginTransaction()
         transaction.add(R.id.recordLayout, recordFragment)
+        transaction.commit()
+    }
+
+    fun removeRecordFragment() {
+        val transaction = supportFragmentManager.beginTransaction()
+        val frameLayout = supportFragmentManager.findFragmentById(R.id.recordLayout)
+        transaction.remove(frameLayout!!)
         transaction.commit()
     }
 
@@ -290,9 +311,10 @@ class PostReview2 : AppCompatActivity() {
         Log.d("PostReview", "uploadAudio - uploadTask defined")
 
         uploadTask.addOnFailureListener {
-            Log.d("PostReview", "실패 => ${it.message}")
+            saveThings.uploadSuccess = false
+            Log.d("Upload", "오디오 업로드 실패 => ${it.message}")
         }.addOnSuccessListener { taskSnapshot ->
-            Log.d("PostReview", "성공 주소 => ${fullPath}")    // 이미지 다운로드할 때 이 주소(fullPath) 사용 => fullPath를 Sound 프로퍼티로 데이터베이스에 저장할 것.
+            Log.d("Upload", "오디오 업로드 성공 주소 => ${fullPath}")    // 이미지 다운로드할 때 이 주소(fullPath) 사용 => fullPath를 Sound 프로퍼티로 데이터베이스에 저장할 것.
         }
         externalCacheFile.delete()
     }
@@ -302,7 +324,21 @@ class PostReview2 : AppCompatActivity() {
     }
 
     fun resetLayout() {     // 텍스트 입력한 거, 가게 선택한 거, 사진 선택한 거, 스피너 선택한 거, 녹음한 거 다 비우기!
-
+        binding.editTextTitle.setText("")
+        restaurantID = null     // 가게 선택 초기화
+        binding.layoutResSelected.visibility = INVISIBLE
+        binding.textView20.visibility = VISIBLE
+        binding.spinnerReview1.setSelection(0)  // 스피너 선택된 값 0으로 초기화
+        binding.editText1.setText("")
+        binding.imageView3.setImageResource(R.drawable.ic_bytesize_photo)   // 사진 선택 초기화
+        binding.imageView3.setScaleType(ImageView.ScaleType.CENTER_INSIDE)
+        binding.editTextLongReview.setText("")
+        removeRecordFragment()
+        setRecordFragment()
+        textInput = false
+        resSelected= false
+        imageSelected = false
+        saveThings.audioRecorded = false
     }
 
     fun postReview(sound: Sound) {
