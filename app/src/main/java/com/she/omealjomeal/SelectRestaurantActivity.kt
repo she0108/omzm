@@ -28,7 +28,6 @@ class SelectRestaurantActivity : AppCompatActivity() {
         val restaurantRef = database.getReference("restaurants")
         lateinit var restaurantIdList: MutableList<String>
         restaurantRef.child("idList").get().addOnSuccessListener {
-            Log.d("select", "list -> ${it.value.toString().split("/").toMutableList()}")
             adapter.listRestaurantID = it.value.toString().split("/").toMutableList()
             adapter.filteredList = adapter.listRestaurantID
             Log.d("select", "adapter.listRestaurantID -> ${adapter.listRestaurantID}")
@@ -71,6 +70,7 @@ class SelectRestaurantActivity : AppCompatActivity() {
         binding.imageButton10.setOnClickListener {
             val intent = Intent(this, PlaylistList::class.java)
             intent.putExtra("from", "other")
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             this.startActivity(intent)
         }
     }

@@ -72,7 +72,7 @@ class RestaurantRecyclerAdapter: RecyclerView.Adapter<RestaurantRecyclerAdapter.
                 val intentRestaurant = Intent(context, PostReview2::class.java)
                 intentRestaurant.putExtra("restaurant", restaurantS_id)
                 intentRestaurant.putExtra("from", "SelectRestaurant")
-                intentRestaurant.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                intentRestaurant.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)       // 가게 선택하고 리뷰화면으로 돌아갈 때 이 액티비티는 스택에서 사라짐
                 context.startActivity(intentRestaurant)
             }
         }

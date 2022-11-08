@@ -7,6 +7,8 @@ import android.media.MediaPlayer.OnPreparedListener
 import android.net.Uri
 import android.os.Bundle
 import android.os.PowerManager
+import android.os.SystemClock
+import java.text.SimpleDateFormat
 import android.util.Log
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
@@ -88,11 +90,11 @@ class PlayActivity : AppCompatActivity() {
         }
 
         // restaurant 관련된 부분
-        restaurantRef.child(selectedRestaurantId?:"").child("name").get().addOnSuccessListener {
+/*        restaurantRef.child(selectedRestaurantId?:"").child("name").get().addOnSuccessListener {
             binding.textRestaurantName2.text = it.value.toString()
         }.addOnFailureListener {
             Log.d("TAG", "error=${it.message}")
-        }
+        }*/
 
 
         restaurantRef.child(selectedRestaurantId?:"").get().addOnSuccessListener {
@@ -139,35 +141,36 @@ class PlayActivity : AppCompatActivity() {
                 }
             }
 
-            /*object : Thread() {
+            object : Thread() {
                 var timeFormat = SimpleDateFormat("mm:ss")  //"분:초"를 나타낼 수 있도록 포멧팅
                 override fun run() {
                     super.run()
                     if (player == null)
                         return
-                    binding.seekBar3.max = player.duration  // player.duration : 음악 총 시간
-                    while (player.isPlaying) {
+                    binding.seekBar3.max = player!!.duration  // player.duration : 음악 총 시간
+                    while (player!!.isPlaying) {
                         runOnUiThread {
-                            binding.seekBar3.progress = player.currentPosition
-                            binding.textCurrentTime.text = timeFormat.format(player.currentPosition)
+                            binding.seekBar3.progress = player!!.currentPosition
+                            binding.textCurrentTime.text = timeFormat.format(player!!.currentPosition)
                         }
                         SystemClock.sleep(200)
                     }
 
-                    *//*1. 음악이 종료되면 자동으로 초기상태로 전환*//*
-                    if(!player.isPlaying){
-                        player.stop()      //음악 정지
-                        player.reset()
+                    //1. 음악이 종료되면 자동으로 초기상태로 전환
+                    if(player!!.isPlaying){
+                        player!!.stop()      //음악 정지
+                        player!!.reset()
                         seekBar.progress = 0
                     }
                 }
-            }.start()*/
+            }.start()
         }
 
         // 하단 탭 버튼 -> 리뷰 작성 화면으로
         binding.imageButton7.setOnClickListener {
             val intent = Intent(this, PostReview2::class.java)
-            intent.putExtra("from", "other")            // selectedPlaylist에 선택한 것 말고 다른, 아예 목록에도 없는 Playlist instance가 전달됨. 왜?
+            intent.putExtra("from", "other")
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             this.startActivity(intent)
         }
     }

@@ -5,8 +5,10 @@ import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.she.omealjomeal.databinding.PlaylistRecyclerBinding
@@ -14,7 +16,7 @@ import kotlinx.android.synthetic.main.playlist_recycler.view.*
 import kotlinx.android.synthetic.main.sound_recycler.view.*
 
 class PlaylistRecyclerAdapter: RecyclerView.Adapter<PlaylistRecyclerAdapter.PlaylistRecyclerHolder>() {
-    var listPlaylist = mutableListOf<Playlist>()    // 여기에 Playlist리스트 전달까지는 잘 됨
+    var listPlaylistID = mutableListOf<String>()    // 여기에 Playlist리스트 전달까지는 잘 됨
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistRecyclerHolder {
         val binding = PlaylistRecyclerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -22,49 +24,56 @@ class PlaylistRecyclerAdapter: RecyclerView.Adapter<PlaylistRecyclerAdapter.Play
     }
 
     override fun onBindViewHolder(holder: PlaylistRecyclerHolder, position: Int) {
-        val playlist = listPlaylist.get(position)
-        Log.d(TAG, "onBindViewHolder의 playlist변수에 선택한 Playlist instance 저장 -> ${position}, ${playlist}")    // 여기까지도 잘 됨
-        holder.setPlaylist(playlist)
+        val playlistID = listPlaylistID.get(position)
+        holder.setPlaylist(playlistID)
     }
 
     override fun getItemCount(): Int {
-        return listPlaylist.size
+        return listPlaylistID.size
     }
 
 
     class PlaylistRecyclerHolder(val binding: PlaylistRecyclerBinding): RecyclerView.ViewHolder(binding.root) {
 
         var context: Context
-        var playlistS: Playlist? = null
-        val storage = Firebase.storage("gs://omzm-84564.appspot.com")   // (storage)
+        var playlistS_id: String = ""
+
 
         init {
             context = binding.root.context
             binding.root.setOnClickListener {
                 val intentPlaylist = Intent(context, SoundList::class.java)
-                intentPlaylist.putExtra("playlist", playlistS)            // selectedPlaylist에 선택한 것 말고 다른, 아예 목록에도 없는 Playlist instance가 전달됨. 왜?
-                context.startActivity(intentPlaylist)                          // 여기 이 intent_playlist가 SoundList.kt에서 접근이 안 됨
+                intentPlaylist.putExtra("playlist", playlistS_id)
+                intentPlaylist.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                context.startActivity(intentPlaylist)
             }
         }
 
-        fun setPlaylist(playlist: Playlist) {
-            Log.d(TAG, "setPlaylist의 playlist변수로 선택된 Playlist 받음 -> ${playlist}")
-            playlistS = playlist
-            binding.run {
-                textTitle.text = playlist.title
+        private val database = Firebase.database("https://omzm-84564-default-rtdb.asia-southeast1.firebasedatabase.app/")   // (realtime database)
+        private val playlistRef = database.getReference("playlists")
+        val storage = Firebase.storage("gs://omzm-84564.appspot.com")   // (storage)
+
+        fun setPlaylist(playlistID: String) {
+            playlistS_id = playlistID
+            playlistRef.child(playlistID).get().addOnSuccessListener {
+                it.getValue(Playlist::class.java)?.let { playlist ->
+                    Log.d("playlist", "playlist -> ${playlist}, ${playlist.id}, ${playlist.title}, ${playlist.imagePath}")
+                    binding.textTitle.setText(playlist.title)
+                    downloadImage(playlist.imagePath)
+                }
+            }.addOnFailureListener {
+                Toast.makeText(context, "네크워크 상태를 확인해주세요.", Toast.LENGTH_SHORT).show()
+                Log.d("playlist", "error=${it.message}")
             }
-            downloadImage(playlist.imagePath)
         }
 
         fun downloadImage(path: String) {
             storage.getReference(path).downloadUrl.addOnSuccessListener { uri ->
                 Glide.with(context).load(uri).into(binding.root.imagePlaylist)
             }.addOnFailureListener {
-                Log.e("storage", "download error => ${it.message}")
+                Log.e("playlist", "download error => ${it.message}")
             }
         }
     }
-
-
 }
 

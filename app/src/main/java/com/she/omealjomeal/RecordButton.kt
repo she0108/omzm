@@ -22,7 +22,7 @@ class RecordButton(context: Context, attrs: AttributeSet): AppCompatImageButton(
                 setImageResource(R.drawable.ic_play)
             }
             State.ON_PLAYING -> {
-                setImageResource(R.drawable.pause)
+                setImageResource(R.drawable.ic_review_pause)
             }
         }
     }
