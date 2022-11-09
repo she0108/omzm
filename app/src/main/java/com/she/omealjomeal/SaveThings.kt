@@ -10,5 +10,6 @@ object SaveThings {
     var saveReview3: String = ""
     var saveImageFilePath: String = ""
     var saveAudioFile: File? = null
+    var userID: String = "user"
     // 녹음 상태 (RecordFragment 상태)
 }

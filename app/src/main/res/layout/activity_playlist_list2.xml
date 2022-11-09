@@ -2,24 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout123"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".PlaylistList">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/playlistRecyclerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
     <TextView
         android:id="@+id/textStore"
@@ -31,6 +18,7 @@
         android:text="보관함"
         android:textColor="@color/black"
         android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -44,7 +32,8 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewPager">
 
         <ImageButton
             android:id="@+id/imageButton"
@@ -95,6 +84,7 @@
         android:layout_marginVertical="10dp"
         android:orientation="horizontal"
         android:scrollbarSize="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/tabLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textStore">
@@ -113,12 +103,14 @@
                 android:layout_gravity="left|center_vertical"
                 android:layout_margin="10dp"
                 android:background="@drawable/cover"
-                android:backgroundTint="@color/skyblue"
+                android:drawableTint="@color/none"
                 android:ellipsize="end"
+                android:foregroundTint="@color/none"
                 android:gravity="bottom|left"
                 android:maxLines="2"
                 android:text="연남동 카페 추천 소리 듣기"
-                android:textSize="17sp" />
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/button2"
@@ -130,8 +122,9 @@
                 android:ellipsize="end"
                 android:gravity="bottom|left"
                 android:maxLines="2"
-                android:text="연남동 카페 추천 소리 듣기"
-                android:textSize="17sp" />
+                android:text="일본 라멘 투어 소리 모음집"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/button3"
@@ -140,12 +133,12 @@
                 android:layout_gravity="left|center_vertical"
                 android:layout_margin="10dp"
                 android:background="@drawable/cover"
-                android:backgroundTint="@color/none"
                 android:ellipsize="end"
                 android:gravity="bottom|left"
                 android:maxLines="2"
-                android:text="연남동 카페 추천 소리 듣기"
-                android:textSize="17sp" />
+                android:text="&quot;갈비인가 통닭인가&quot; 진정한 치킨 맛집 모음"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/button4"
@@ -153,12 +146,13 @@
                 android:layout_height="120dp"
                 android:layout_gravity="left|center_vertical"
                 android:layout_margin="10dp"
-                android:background="@drawable/cover"
+                android:background="@drawable/cover2"
                 android:ellipsize="end"
                 android:gravity="bottom|left"
                 android:maxLines="2"
-                android:text="연남동 카페 추천 소리 듣기"
-                android:textSize="17sp" />
+                android:text="서울 크로와상 맛집 빵지순례 소리 모음"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
 
         </LinearLayout>
@@ -166,8 +160,9 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
-        android:layout_width="409dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/viewPager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView"
@@ -183,8 +178,20 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="좋아요" />
+            android:text="내 리뷰" />
 
     </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

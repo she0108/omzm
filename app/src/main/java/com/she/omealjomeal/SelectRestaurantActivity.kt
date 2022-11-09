@@ -20,6 +20,8 @@ class SelectRestaurantActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        overridePendingTransition(0, 0)
+
         var adapter = RestaurantRecyclerAdapter()
 
         //리사이클러뷰
@@ -73,5 +75,10 @@ class SelectRestaurantActivity : AppCompatActivity() {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             this.startActivity(intent)
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        overridePendingTransition(0, 0)
     }
 }
