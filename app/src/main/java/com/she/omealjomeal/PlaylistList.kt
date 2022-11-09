@@ -7,28 +7,38 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.she.omealjomeal.databinding.ActivityPlaylistList2Binding
 import com.she.omealjomeal.databinding.ActivityPlaylistListBinding
 
 
 class PlaylistList : AppCompatActivity() {
 
-    private val binding by lazy { ActivityPlaylistListBinding.inflate(layoutInflater) }
+    private val binding by lazy { ActivityPlaylistList2Binding.inflate(layoutInflater) }
     private val database = Firebase.database("https://omzm-84564-default-rtdb.asia-southeast1.firebasedatabase.app/")   // (realtime database)
     private val playlistRef = database.getReference("playlists")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        overridePendingTransition(0, 0)
 
+        val fragmentList = listOf(MyListFragment(), MyReviewFragment())
+        var adapter = ListFragmentAdapter(this)
+        adapter.fragmentList = fragmentList
+        binding.viewPager.adapter = adapter
 
-
+        val tabTitles = listOf("내 리스트", "내 리뷰")
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+            tab.text = tabTitles[position]
+        }.attach()
 
         // 리사이클러뷰
         /*val data: MutableList<Playlist> = loadData_test()        // 플레이리스트 정보 데이터베이스에서 불러올 수 있도록 코드 수정
         Log.d(TAG, "data에 Playlist리스트 저장 -> $data")*/
-        var adapter = PlaylistRecyclerAdapter()
+/*        var adapter = PlaylistRecyclerAdapter()
 
         playlistRef.child("idList").get().addOnSuccessListener {
             adapter.listPlaylistID = it.value.toString().split("/").toMutableList()
@@ -38,7 +48,7 @@ class PlaylistList : AppCompatActivity() {
         }.addOnFailureListener {
             Toast.makeText(baseContext, "네크워크 상태를 확인해주세요.", Toast.LENGTH_SHORT).show()
             Log.d("TAG", "error=${it.message}")
-        }
+        }*/
 
 
 
@@ -52,6 +62,13 @@ class PlaylistList : AppCompatActivity() {
             this.startActivity(intent)
         }
     }
+
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(0, 0)
+    }
+
 
 /*    override fun onBackPressed() {
         super.onBackPressed()

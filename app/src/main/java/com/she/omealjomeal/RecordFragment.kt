@@ -2,12 +2,14 @@ package com.she.omealjomeal
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.icu.text.SimpleDateFormat
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Bundle
 import android.os.PowerManager
+import android.os.SystemClock
 import android.service.voice.VoiceInteractionSession
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -19,6 +21,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import com.she.omealjomeal.databinding.FragmentRecordBinding
+import kotlinx.android.synthetic.main.activity_play.*
 import java.io.File
 
 
@@ -39,8 +42,8 @@ class RecordFragment : Fragment() {
     ): View? {
         binding = FragmentRecordBinding.inflate(inflater, container, false)   //프래그먼트 바인딩
 
-        if (SaveThings.saveAudioFile?.isFile()?:false) {  // 녹음 후
-            state = State.AFTER_RECORDING
+        if (SaveThings.saveAudioFile?.isFile?:false) {  // 녹음 후
+            state_ = State.AFTER_RECORDING
             player = MediaPlayer().apply {
                 setAudioAttributes(
                     AudioAttributes.Builder()
@@ -63,7 +66,7 @@ class RecordFragment : Fragment() {
         }
 
         binding.btnRecord2.setOnClickListener {
-            when (state) {
+            when (state_) {
                 State.BEFORE_RECORDING -> { // 녹음 시작.
                     permissionLauncher_record.launch(permissions)    // 권한 요청 띄우는 거 -> 수락하면 startRecording -> startCountup, state = ON_RECORDING
                 }
@@ -77,6 +80,34 @@ class RecordFragment : Fragment() {
                     pauseRecordedFile()
                 }
             }
+
+            object : Thread() {
+                var timeFormat = SimpleDateFormat("mm:ss")  //"분:초"를 나타낼 수 있도록 포멧팅
+                override fun run() {
+                    super.run()
+                    if (player == null)
+                        return
+                    binding.seekBar2.max = player!!.duration  // player.duration : 음악 총 시간
+                    while (player!!.isPlaying) {
+                        run {
+                            binding.seekBar2.progress = player!!.currentPosition
+                            binding.root.post {
+                                binding.textViewStart.text = timeFormat.format(player!!.currentPosition)
+                                binding.textViewTotal.text = timeFormat.format(player!!.duration)
+                            }
+                        }
+                        SystemClock.sleep(200)
+                    }
+
+                    //1. 음악이 종료되면 자동으로 초기상태로 전환
+                    if(player!!.isPlaying){
+                        player!!.stop()      //음악 정지
+                        player!!.reset()
+                        seekBar.progress = 0
+                        state_ = com.she.omealjomeal.State.AFTER_RECORDING
+                    }
+                }
+            }.start()
         }
 
         binding.btnClear2.setOnClickListener {
@@ -91,7 +122,7 @@ class RecordFragment : Fragment() {
     }
 
     // 외부저장소 쓰는 권한은 필요없으면 뺄 것
-    val permissions = arrayOf(Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    val permissions = arrayOf(Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
 
     val permissionLauncher_record = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { resultMap ->
         val isAllGranted = permissions.all { e -> resultMap[e] == true }
@@ -109,12 +140,14 @@ class RecordFragment : Fragment() {
     val recordedFile by lazy { File(requireContext().filesDir, "recording.3gp") }
 
     private var check = Check.BEFORE_CHECK      // 녹음파일 확정 전/후
-    private var state = State.BEFORE_RECORDING  // 녹음전/녹음중/녹음후/재생중
+    var state_ = State.BEFORE_RECORDING  // 녹음전/녹음중/녹음후/재생중
         set(value) {            // state 변화에 따라 실행할 코드들 여기에 작성
             field = value
             binding.btnRecord2.updateIconWithState(value)    //아이콘 모양 변경
             seekBarVisible(value == State.AFTER_RECORDING || value == State.ON_PLAYING)     // seekBar + time textViews
             sideButtonsVisible((value == State.AFTER_RECORDING || value == State.ON_PLAYING) && (check == Check.BEFORE_CHECK))  // clear button + check button
+
+
         }
 
     companion object { const val REQUEST_RECORD_AUDIO_PERMISSION = 201 }
@@ -137,17 +170,18 @@ class RecordFragment : Fragment() {
     }*/
 
     fun startRecording() {
+        recordedFile.delete()
         recorder = MediaRecorder(requireContext()).apply {
             setAudioSource(MediaRecorder.AudioSource.MIC)
             setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)   // 포멧?
-            setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)      // 엔코더
+            setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT)      // 엔코더
             setOutputFile(recordingFilePath)
             Log.d("Record", "${requireContext().filesDir}/recording.3gp") // 앞에가 파일 경로, recording.3gp가 파일명
             prepare()
         }
         recorder?.start()       // 녹음기 실행
         binding.textCountup.startCountup()       // 녹음시간 시작
-        state = State.ON_RECORDING      // state 변경
+        state_ = State.ON_RECORDING      // state 변경
     }
 
     fun stopRecording() {
@@ -158,8 +192,8 @@ class RecordFragment : Fragment() {
         }
         recorder = null
         binding.textCountup.stopCountup()    // 녹음 시간 저장해야 됨
-        state = State.AFTER_RECORDING
-        Log.d("Record", "외부저장소 캐시에 파일 존재 -> ${recordedFile.isFile}")
+        state_ = State.AFTER_RECORDING
+        Log.d("Record", "파일 존재 -> ${recordedFile.isFile}")
         SaveThings.saveAudioFile = recordedFile
         player = MediaPlayer().apply {
             setAudioAttributes(
@@ -167,8 +201,8 @@ class RecordFragment : Fragment() {
                     .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                     .build()
             )
-            setDataSource(requireContext().applicationContext, Uri.fromFile(recordedFile))  // 재생에 필요한 uri
-            setWakeMode(requireContext().applicationContext, PowerManager.PARTIAL_WAKE_LOCK)
+            setDataSource(recordingFilePath)
+//            setDataSource(requireContext().applicationContext, Uri.fromFile(File(recordingFilePath)))  // 재생에 필요한 uri
             prepareAsync()
             var preparedListener: MediaPlayer.OnPreparedListener = MediaPlayer.OnPreparedListener { player ->
                 Log.d("Record", "OnPreparedListener called")
@@ -178,19 +212,19 @@ class RecordFragment : Fragment() {
     }
 
     fun playRecordedFile() {    // prepare 완료되면 실행
-        state = State.ON_PLAYING
+        state_ = State.ON_PLAYING
         player?.start()
         Log.d("Record", "playRecordedFile() called, player.isPlaying -> ${player?.isPlaying}")
     }
 
     fun pauseRecordedFile() {
-        state = State.AFTER_RECORDING
+        state_ = State.AFTER_RECORDING
         player?.pause()
         Log.d("Record", "pauseRecordedFile() called, player.isPlaying -> ${player?.isPlaying}")
     }
 
     fun clearRecordedFile() {
-        state = State.BEFORE_RECORDING
+        state_ = State.BEFORE_RECORDING
         recordedFile.delete()
         Log.d("Record", "clearRecordedFile() called, 외부저장소 캐시에 저장된 파일 삭제 -> 파일 존재 여부 ${recordedFile.isFile}")
 //        SaveThings.saveAudio = null
@@ -202,7 +236,7 @@ class RecordFragment : Fragment() {
 
     fun checkRecordedFile() {
         check = Check.AFTER_CHECK
-        state = state
+        state_ = state_
         Log.d("Record", "checkRecordedFile() called")
         PostReview2.saveThings.audioFile = recordedFile
         PostReview2.saveThings.audioRecorded = true
@@ -233,5 +267,4 @@ class RecordFragment : Fragment() {
             binding.btnCheck2.visibility = INVISIBLE
         }
     }
-
 }
