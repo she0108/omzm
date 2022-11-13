@@ -21,7 +21,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import com.she.omealjomeal.databinding.FragmentRecordBinding
-import kotlinx.android.synthetic.main.activity_play.*
+import kotlinx.android.synthetic.main.fragment_record.*
 import java.io.File
 
 
@@ -103,7 +103,7 @@ class RecordFragment : Fragment() {
                     if(player!!.isPlaying){
                         player!!.stop()      //음악 정지
                         player!!.reset()
-                        seekBar.progress = 0
+                        seekBar2.progress = 0
                         state_ = com.she.omealjomeal.State.AFTER_RECORDING
                     }
                 }
@@ -149,8 +149,6 @@ class RecordFragment : Fragment() {
 
 
         }
-
-    companion object { const val REQUEST_RECORD_AUDIO_PERMISSION = 201 }
 
 
 

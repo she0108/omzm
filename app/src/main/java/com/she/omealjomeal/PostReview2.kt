@@ -152,6 +152,10 @@ class PostReview2 : AppCompatActivity() {
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             this.startActivity(intent)
         }
+
+        binding.imageButton6.setOnClickListener {
+            finish()
+        }
     }
 
 

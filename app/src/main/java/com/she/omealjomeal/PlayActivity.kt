@@ -19,7 +19,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.she.omealjomeal.databinding.ActivityPlay2Binding
-import kotlinx.android.synthetic.main.activity_play.*
+import kotlinx.android.synthetic.main.activity_play2.*
 import kotlinx.android.synthetic.main.activity_play2.view.*
 
 class PlayActivity : AppCompatActivity() {
@@ -134,7 +134,7 @@ class PlayActivity : AppCompatActivity() {
 
         // 재생, 일시정지 등 구현
         binding.root.btnPlay3.setOnClickListener {  // 재생/일시정지 버튼 눌렀을 때
-            when (state) {
+            when (state_) {
                 State2.PLAY -> {
                     stopPlaying()
                 }
@@ -143,7 +143,30 @@ class PlayActivity : AppCompatActivity() {
                 }
             }
 
+            object : Thread() {
+                var timeFormat = SimpleDateFormat("mm:ss")  //"분:초"를 나타낼 수 있도록 포멧팅
+                override fun run() {
+                    super.run()
+                    if (player == null)
+                        return
+                    binding.seekBar3.max = player!!.duration  // player.duration : 음악 총 시간
+                    while (player!!.isPlaying) {
+                        runOnUiThread {
+                            binding.seekBar3.progress = player!!.currentPosition
+                            binding.textCurrentTime.text = timeFormat.format(player!!.currentPosition)
+                            binding.textTotalTime.text = timeFormat.format(player!!.duration)
+                        }
+                        SystemClock.sleep(200)
+                    }
 
+                    //1. 음악이 종료되면 자동으로 초기상태로 전환
+                    if(player!!.isPlaying){
+                        player!!.stop()      //음악 정지
+                        player!!.reset()
+                        binding.seekBar3.progress = 0
+                    }
+                }
+            }.start()
         }
 
         // 하단 탭 버튼 -> 리뷰 작성 화면으로
@@ -168,35 +191,10 @@ class PlayActivity : AppCompatActivity() {
 
     private var player: MediaPlayer? = null
 
-    private var state = State2.PLAY
+    var state_ = State2.PLAY
         set(value) {
             field = value
             binding.root.btnPlay3.updateIconWithState(value)
-
-            object : Thread() {
-                var timeFormat = SimpleDateFormat("mm:ss")  //"분:초"를 나타낼 수 있도록 포멧팅
-                override fun run() {
-                    super.run()
-                    if (player == null)
-                        return
-                    binding.seekBar3.max = player!!.duration  // player.duration : 음악 총 시간
-                    while (player!!.isPlaying) {
-                        runOnUiThread {
-                            binding.seekBar3.progress = player!!.currentPosition
-                            binding.textCurrentTime.text = timeFormat.format(player!!.currentPosition)
-                            binding.textTotalTime.text = timeFormat.format(player!!.duration)
-                        }
-                        SystemClock.sleep(200)
-                    }
-
-                    //1. 음악이 종료되면 자동으로 초기상태로 전환
-                    if(player!!.isPlaying){
-                        player!!.stop()      //음악 정지
-                        player!!.reset()
-                        seekBar.progress = 0
-                    }
-                }
-            }.start()
         }
 
 /*    fun createPlayer(uri: Uri) {
@@ -209,13 +207,13 @@ class PlayActivity : AppCompatActivity() {
 
     fun startPlaying() {
         Log.d(TAG, "startPlaying() called -> true")
-        state = State2.PLAY
+        state_ = State2.PLAY
         player?.start()
         Log.d(TAG, "player playing -> ${player?.isPlaying}")
     }
 
     fun stopPlaying() {
-        state = State2.PAUSE
+        state_ = State2.PAUSE
         player?.pause()
     }
 }
