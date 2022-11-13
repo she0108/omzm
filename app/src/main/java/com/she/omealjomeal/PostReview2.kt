@@ -147,6 +147,10 @@ class PostReview2 : AppCompatActivity() {
             intent.putExtra("from", "other")
             this.startActivity(intent)
         }
+
+        binding.imageButton6.setOnClickListener {
+            finish()
+        }
     }
 
     override fun onStop() {

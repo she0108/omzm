@@ -5,11 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"><![CDATA[
-    tools:layout_editor_absoluteX="-1dp"
-    tools:layout_editor_absoluteY="-9dp">
-
-    ]]>
+    android:background="@color/white">
 
     <LinearLayout
         android:id="@+id/topLayout"
@@ -209,10 +205,10 @@
         android:ellipsize="marquee"
         android:focusable="auto"
         android:focusableInTouchMode="true"
-        android:focusedByDefault="true"
+        android:focusedByDefault="false"
         android:gravity="center"
-        android:screenReaderFocusable="true"
-        android:selectAllOnFocus="true"
+        android:screenReaderFocusable="false"
+        android:selectAllOnFocus="false"
         android:singleLine="true"
         android:text="이곳은 친구와 함께 활발하게 놀기 좋은 곳이다"
         android:textSize="16sp"
