@@ -1,3 +1,4 @@
+/*
 package com.she.omealjomeal
 
 import android.location.LocationRequest
@@ -125,4 +126,6 @@ class GoogleMaps : AppCompatActivity(), OnMapReadyCallback {
         mMap.addMarker(markerOptions)
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
     }
+ }
 }
+*/
