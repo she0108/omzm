@@ -4,4 +4,8 @@
     <string name="title_activity_senti_map">sentiMap</string>
     <string name="title_activity_google_maps">GoogleMaps</string>
     <string name="title_activity_maps">Maps</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>

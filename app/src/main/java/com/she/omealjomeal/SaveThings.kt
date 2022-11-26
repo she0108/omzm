@@ -12,4 +12,10 @@ object SaveThings {
     var saveAudioFile: File? = null
     var userID: String = "user"
     // 녹음 상태 (RecordFragment 상태)
+
+    var selectedRestaurantID: String = ""
+    var selectedPlaylistID: String = ""
+    var selectedSoundID: String = ""
+
+    var userFragment: UserFragment = UserFragment()
 }

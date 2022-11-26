@@ -3,41 +3,40 @@ package com.she.omealjomeal
 import android.content.Intent
 import android.media.AudioAttributes
 import android.media.MediaPlayer
-import android.media.MediaPlayer.OnPreparedListener
 import android.net.Uri
 import android.os.Bundle
 import android.os.PowerManager
 import android.os.SystemClock
-import java.text.SimpleDateFormat
 import android.util.Log
-import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import com.she.omealjomeal.databinding.ActivityPlay2Binding
-import kotlinx.android.synthetic.main.activity_play2.*
+import com.she.omealjomeal.databinding.FragmentPlayBinding
 import kotlinx.android.synthetic.main.activity_play2.view.*
+import java.text.SimpleDateFormat
 
-class PlayActivity : AppCompatActivity() {
 
-    private val TAG = "player"
-
-    private val binding by lazy { ActivityPlay2Binding.inflate(layoutInflater) }
+class PlayFragment : Fragment() {
+    lateinit var binding: FragmentPlayBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
 
-        overridePendingTransition(0, 0)
+    }
 
-        val selectedSoundId = intent.getStringExtra("sound")      // 리뷰목록(SoundList)에서 선택된 리뷰(Sound) 인스턴스가 selectedSound에 저장됨
-        val selectedRestaurantId = intent.getStringExtra("restaurant")
-        Log.d("TAG", "selectedSoundId -> $selectedSoundId")
-        Log.d("TAG", "selectedRestaurantId -> $selectedRestaurantId")
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentPlayBinding.inflate(inflater, container, false)
+
+        val selectedSoundId = arguments?.getString("sound")      // 리뷰목록(SoundList)에서 선택된 리뷰(Sound) 인스턴스가 selectedSound에 저장됨
+        val selectedRestaurantId = arguments?.getString("restaurant")
 
         val database = Firebase.database("https://omzm-84564-default-rtdb.asia-southeast1.firebasedatabase.app/")   // (realtime database)
         val storage = Firebase.storage("gs://omzm-84564.appspot.com")
@@ -45,7 +44,6 @@ class PlayActivity : AppCompatActivity() {
         val restaurantRef = database.getReference("restaurants")
 
         lateinit var audioUri: Uri
-
 
         // sound 관련된 부분
         soundRef.child(selectedSoundId?:"").get().addOnSuccessListener {
@@ -75,13 +73,14 @@ class PlayActivity : AppCompatActivity() {
                                 .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                                 .build()
                         )
-                        setDataSource(applicationContext, uri)     // lateinit property audioUri has not been initialized
-                        setWakeMode(applicationContext, PowerManager.PARTIAL_WAKE_LOCK)
+                        setDataSource(requireContext(), uri)     // lateinit property audioUri has not been initialized
+                        setWakeMode(requireContext(), PowerManager.PARTIAL_WAKE_LOCK)
                         prepareAsync()
-                        var preparedListener: OnPreparedListener = OnPreparedListener { player ->
-                            Log.d(TAG, "OnPreparedListener called")
-                            startPlaying()
-                        }
+                        var preparedListener: MediaPlayer.OnPreparedListener =
+                            MediaPlayer.OnPreparedListener { player ->
+                                Log.d(TAG, "OnPreparedListener called")
+                                startPlaying()
+                            }
                         setOnPreparedListener(preparedListener)
                         Log.d(TAG, "player prepared")
                     }
@@ -92,25 +91,16 @@ class PlayActivity : AppCompatActivity() {
             }
         }
 
-        // restaurant 관련된 부분
-/*        restaurantRef.child(selectedRestaurantId?:"").child("name").get().addOnSuccessListener {
-            binding.textRestaurantName2.text = it.value.toString()
-        }.addOnFailureListener {
-            Log.d("TAG", "error=${it.message}")
-        }*/
-
-
         restaurantRef.child(selectedRestaurantId?:"").get().addOnSuccessListener {
             it.getValue(Restaurant::class.java)?.let { restaurant ->    // Restaurant 클래스로 가져오는 거 해보고 안되면 일일이 String으로...
                 binding.textRestaurantName2.text = restaurant.name
 
                 // 가게이름 눌렀을 때 가게정보 화면으로 이동
                 binding.textRestaurantName2.setOnClickListener {
-                    Log.d("click", "textView3 clicked")
-                    val intentRestaurant = Intent(this, MapsActivity::class.java)        // MapsActivity -> 가게정보 화면으로 수정
+                    /*val intentRestaurant = Intent(this, MapsActivity::class.java)        // MapsActivity -> 가게정보 화면으로 수정
                     intentRestaurant.putExtra("latitude", restaurant.latitude)
                     intentRestaurant.putExtra("longitude", restaurant.longitude)
-                    this.startActivity(intentRestaurant)
+                    this.startActivity(intentRestaurant)*/
                 }
             }
         }.addOnFailureListener {
@@ -121,15 +111,15 @@ class PlayActivity : AppCompatActivity() {
 
         // 사진 눌렀을 때 리뷰 창 visible, clickable
         binding.imageSound2.setOnClickListener {
-            if (binding.layoutLongReview.visibility == INVISIBLE) {
-                binding.layoutLongReview.visibility = VISIBLE
+            if (binding.layoutLongReview.visibility == View.INVISIBLE) {
+                binding.layoutLongReview.visibility = View.VISIBLE
                 binding.layoutLongReview.isClickable = true
             }
         }
 
         // 리뷰 창 떠있는 상태에서 누르면 다시 invisible, not clickable
         binding.layoutLongReview.setOnClickListener {
-            binding.layoutLongReview.visibility = INVISIBLE
+            binding.layoutLongReview.visibility = View.INVISIBLE
             binding.layoutLongReview.isClickable = false
         }
 
@@ -152,7 +142,7 @@ class PlayActivity : AppCompatActivity() {
                         return
                     binding.seekBar3.max = player!!.duration  // player.duration : 음악 총 시간
                     while (player!!.isPlaying) {
-                        runOnUiThread {
+                        run {
                             binding.seekBar3.progress = player!!.currentPosition
                             binding.textCurrentTime.text = timeFormat.format(player!!.currentPosition)
                             binding.textTotalTime.text = timeFormat.format(player!!.duration)
@@ -170,25 +160,8 @@ class PlayActivity : AppCompatActivity() {
             }.start()
         }
 
-        // 하단 탭 버튼 -> 리뷰 작성 화면으로
-        binding.imageButton7.setOnClickListener {
-            val intent = Intent(this, PostReview2::class.java)
-            intent.putExtra("from", "other")
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-            this.startActivity(intent)
-        }
-
-        binding.imageButton61.setOnClickListener {
-            finish()
-        }
+        return binding.root
     }
-
-    override fun onStop() {
-        super.onStop()
-        overridePendingTransition(0, 0)
-    }
-
 
     private var player: MediaPlayer? = null
 
@@ -217,4 +190,5 @@ class PlayActivity : AppCompatActivity() {
         state_ = State2.PAUSE
         player?.pause()
     }
+
 }

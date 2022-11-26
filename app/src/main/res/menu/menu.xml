@@ -4,20 +4,20 @@
         android:title="Home"
         android:enabled="true"
         android:id="@+id/menu_home"
-        android:icon="@drawable/play2" />
+        android:icon="@drawable/ic_home2" />
     <item
         android:title="Search"
         android:enabled="true"
         android:id="@+id/menu_search"
-        android:icon="@drawable/pause" />
+        android:icon="@drawable/ic_search2" />
     <item
         android:title="Review"
         android:enabled="true"
         android:id="@+id/menu_review"
-        android:icon="@drawable/ic_pencil" />
+        android:icon="@drawable/ic_pencil2" />
     <item
         android:title="My Page"
         android:enabled="true"
         android:id="@+id/menu_mypage"
-        android:icon="@drawable/stop" />
+        android:icon="@drawable/ic_user" />
 </menu>

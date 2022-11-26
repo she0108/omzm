@@ -17,7 +17,8 @@
         android:src="@drawable/ic_launcher_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@color/none" />
 
     <TextView
         android:id="@+id/textListTitle"
@@ -26,7 +27,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
-        android:text="Playlist Title"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -42,7 +42,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="32dp"
-        android:text="made by User"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

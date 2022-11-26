@@ -14,7 +14,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@color/none" />
 
     <TextView
         android:id="@+id/textTitle2"
@@ -25,7 +25,6 @@
         android:layout_marginEnd="16dp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:text="소리 제목"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/textRestaurant"
         app:layout_constraintEnd_toStartOf="@+id/btnPlay2"
@@ -42,7 +41,6 @@
         android:layout_marginBottom="16dp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:text="가게 이름"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnPlay2"

@@ -2,12 +2,15 @@ package com.she.omealjomeal
 
 import android.content.Context
 import android.content.Intent
+import android.system.Os.remove
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filterable
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.database.ktx.database
@@ -20,6 +23,8 @@ import kotlinx.android.synthetic.main.sound_recycler.view.*
 
 class RestaurantRecyclerAdapter: RecyclerView.Adapter<RestaurantRecyclerAdapter.RestaurantRecyclerHolder>() {
 
+    lateinit var mainActivity: MainActivity
+    lateinit var pencilFragment: PencilFragment
     var listRestaurantID = mutableListOf<String>()
     var filteredList = listRestaurantID     // 일단 전체리스트 복사
     var map_name_id = mutableMapOf<String, String>()
@@ -57,7 +62,6 @@ class RestaurantRecyclerAdapter: RecyclerView.Adapter<RestaurantRecyclerAdapter.
     }
 
     inner class RestaurantRecyclerHolder(val binding: RestaurantRecyclerBinding): RecyclerView.ViewHolder(binding.root) {
-
         var context: Context
         var restaurantS_id: String = ""
 
@@ -65,15 +69,14 @@ class RestaurantRecyclerAdapter: RecyclerView.Adapter<RestaurantRecyclerAdapter.
         private val restaurantRef = database.getReference("restaurants")
         private val storage = Firebase.storage("gs://omzm-84564.appspot.com")   // 이거 전역변수로 할까?
 
-        init {
+        init {      // fragment이므로 intent 말고 다른 거 써야 함
             context = binding.root.context
             binding.root.setOnClickListener {
                 // 선택한 restaurant id 인텐트로 액티비티에 전달
-                val intentRestaurant = Intent(context, PostReview2::class.java)
-                intentRestaurant.putExtra("restaurant", restaurantS_id)
-                intentRestaurant.putExtra("from", "SelectRestaurant")
-                intentRestaurant.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)       // 가게 선택하고 리뷰화면으로 돌아갈 때 이 액티비티는 스택에서 사라짐
-                context.startActivity(intentRestaurant)
+//                SaveThings.selectedRestaurantID = restaurantS_id
+                Log.d("test", "restaurant selected -> ${SaveThings.selectedRestaurantID}")
+                SaveThings.selectedRestaurantID = restaurantS_id
+                pencilFragment.setReviewFragment()
             }
         }
 

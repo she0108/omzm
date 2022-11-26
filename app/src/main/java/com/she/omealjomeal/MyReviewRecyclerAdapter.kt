@@ -44,10 +44,7 @@ class MyReviewRecyclerAdapter: RecyclerView.Adapter<MyReviewRecyclerAdapter.MyRe
         init {
             context = binding.root.context
             binding.root.setOnClickListener {
-                val intentSound = Intent(context, PlayActivity::class.java)        // 재생화면으로 이동하도록 수정
-                intentSound.putExtra("sound", soundS_id)
-                intentSound.putExtra("restaurant", restaurantS_id)
-                context.startActivity(intentSound)
+                SaveThings.userFragment.setPlayFragment(soundS_id, restaurantS_id)
             }
         }
 

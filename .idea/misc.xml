@@ -4,7 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/drawable-v24/ic_heart.xml" value="0.1" />
+        <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/drawable-v24/ic_home.xml" value="0.2565" />
         <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/drawable-v24/ic_person.xml" value="0.251" />
+        <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/drawable-v24/round_bounded_gray.xml" value="0.2565" />
+        <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/drawable/home_searchview_background.xml" value="0.2565" />
+        <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/drawable/ic_allign.xml" value="0.2565" />
+        <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/drawable/ic_app_logo.xml" value="0.2565" />
         <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/drawable/ic_cancel.xml" value="0.1" />
         <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/drawable/ic_delete.xml" value="0.1" />
         <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/drawable/ic_pencil.xml" value="0.176" />
@@ -13,7 +18,7 @@
         <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/drawable/round_blue_layout.xml" value="0.2575" />
         <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/drawable/round_bounded_gray.xml" value="0.2575" />
         <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/drawable/round_white_layout.xml" value="0.2575" />
-        <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/activity_main.xml" value="0.536" />
+        <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/activity_main2.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/activity_maps.xml" value="0.2" />
         <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/activity_play.xml" value="0.264" />
@@ -29,24 +34,31 @@
         <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/activity_sound_list2.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/activity_start.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/fragment_album.xml" value="0.264" />
-        <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/fragment_home.xml" value="0.24230072463768115" />
+        <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/fragment_dashboard.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/fragment_home.xml" value="0.264" />
         <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/fragment_like.xml" value="0.24230072463768115" />
         <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/fragment_my_list.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/fragment_my_review.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/fragment_mypage.xml" value="0.24230072463768115" />
+        <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/fragment_notifications.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/fragment_pencil.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/fragment_play.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/fragment_playlist.xml" value="0.24230072463768115" />
         <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/fragment_record.xml" value="0.264" />
         <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/fragment_restaurant.xml" value="0.25364583333333335" />
-        <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/fragment_search.xml" value="0.24230072463768115" />
+        <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/fragment_review.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/fragment_search.xml" value="0.264" />
         <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/fragment_select_restaurant.xml" value="0.264" />
         <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/fragment_select_restaurant_list.xml" value="0.2390625" />
+        <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/fragment_user.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/item_recycler.xml" value="0.264" />
         <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/myReview_recycler.xml" value="0.25364583333333335" />
-        <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/my_review_recycler.xml" value="0.1" />
+        <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/my_review_recycler.xml" value="0.264" />
         <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/playlist_recycler.xml" value="0.4" />
-        <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/restaurant_recycler.xml" value="0.4" />
+        <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/restaurant_recycler.xml" value="0.264" />
         <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/layout/sound_recycler.xml" value="0.264" />
-        <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/menu/menu.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/menu/menu.xml" value="0.1" />
         <entry key="..\:/Users/SHE/AndroidStudioProjects/OMealJoMeal/app/src/main/res/xml/file_paths.xml" value="0.1" />
       </map>
     </option>

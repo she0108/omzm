@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/menu_home">
+
+    <fragment
+        android:id="@+id/menu_home"
+        android:name="com.she.omealjomeal.HomeFragment"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/menu_search"
+        android:name="com.she.omealjomeal.SearchFragment"
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
+        android:id="@+id/menu_review"
+        android:name="com.she.omealjomeal.PencilFragment"
+        tools:layout="@layout/fragment_pencil" />
+
+    <fragment
+        android:id="@+id/menu_mypage"
+        android:name="com.she.omealjomeal.UserFragment"
+        tools:layout="@layout/fragment_user" />
+</navigation>

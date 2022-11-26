@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.playlist_recycler.view.*
 import kotlinx.android.synthetic.main.sound_recycler.view.*
 
 class PlaylistRecyclerAdapter: RecyclerView.Adapter<PlaylistRecyclerAdapter.PlaylistRecyclerHolder>() {
+
     var listPlaylistID = mutableListOf<String>()    // 여기에 Playlist리스트 전달까지는 잘 됨
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistRecyclerHolder {
@@ -33,7 +34,7 @@ class PlaylistRecyclerAdapter: RecyclerView.Adapter<PlaylistRecyclerAdapter.Play
     }
 
 
-    class PlaylistRecyclerHolder(val binding: PlaylistRecyclerBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class PlaylistRecyclerHolder(val binding: PlaylistRecyclerBinding): RecyclerView.ViewHolder(binding.root) {
 
         var context: Context
         var playlistS_id: String = ""
@@ -42,10 +43,7 @@ class PlaylistRecyclerAdapter: RecyclerView.Adapter<PlaylistRecyclerAdapter.Play
         init {
             context = binding.root.context
             binding.root.setOnClickListener {
-                val intentPlaylist = Intent(context, SoundList::class.java)
-                intentPlaylist.putExtra("playlist", playlistS_id)
-                intentPlaylist.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                context.startActivity(intentPlaylist)
+                SaveThings.userFragment.setPlaylistFragment(playlistS_id)
             }
         }
 

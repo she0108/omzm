@@ -10,13 +10,13 @@
         android:id="@+id/imagePlaylist"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:scaleType="centerCrop"
         android:layout_margin="10dp"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@color/none" />
 
     <TextView
         android:id="@+id/textTitle"
@@ -25,7 +25,6 @@
         android:layout_marginHorizontal="20dp"
         android:ellipsize="end"
         android:maxLines="2"
-        android:text="소리 제목을 여기에 입력하세요 그러시면 됩니다 조금만 더 길게 써볼까요?"
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
