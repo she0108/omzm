@@ -19,7 +19,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.she.omealjomeal.databinding.ActivityPlay2Binding
-import kotlinx.android.synthetic.main.activity_play.*
+import kotlinx.android.synthetic.main.activity_play2.*
 import kotlinx.android.synthetic.main.activity_play2.view.*
 
 class PlayActivity : AppCompatActivity() {
@@ -31,6 +31,8 @@ class PlayActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        overridePendingTransition(0, 0)
 
         val selectedSoundId = intent.getStringExtra("sound")      // 리뷰목록(SoundList)에서 선택된 리뷰(Sound) 인스턴스가 selectedSound에 저장됨
         val selectedRestaurantId = intent.getStringExtra("restaurant")
@@ -132,7 +134,7 @@ class PlayActivity : AppCompatActivity() {
 
         // 재생, 일시정지 등 구현
         binding.root.btnPlay3.setOnClickListener {  // 재생/일시정지 버튼 눌렀을 때
-            when (state) {
+            when (state_) {
                 State2.PLAY -> {
                     stopPlaying()
                 }
@@ -152,6 +154,7 @@ class PlayActivity : AppCompatActivity() {
                         runOnUiThread {
                             binding.seekBar3.progress = player!!.currentPosition
                             binding.textCurrentTime.text = timeFormat.format(player!!.currentPosition)
+                            binding.textTotalTime.text = timeFormat.format(player!!.duration)
                         }
                         SystemClock.sleep(200)
                     }
@@ -160,7 +163,7 @@ class PlayActivity : AppCompatActivity() {
                     if(player!!.isPlaying){
                         player!!.stop()      //음악 정지
                         player!!.reset()
-                        seekBar.progress = 0
+                        binding.seekBar3.progress = 0
                     }
                 }
             }.start()
@@ -171,14 +174,24 @@ class PlayActivity : AppCompatActivity() {
             val intent = Intent(this, PostReview2::class.java)
             intent.putExtra("from", "other")
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             this.startActivity(intent)
         }
+
+        binding.imageButton61.setOnClickListener {
+            finish()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        overridePendingTransition(0, 0)
     }
 
 
     private var player: MediaPlayer? = null
 
-    private var state = State2.PLAY
+    var state_ = State2.PLAY
         set(value) {
             field = value
             binding.root.btnPlay3.updateIconWithState(value)
@@ -194,13 +207,13 @@ class PlayActivity : AppCompatActivity() {
 
     fun startPlaying() {
         Log.d(TAG, "startPlaying() called -> true")
-        state = State2.PLAY
+        state_ = State2.PLAY
         player?.start()
         Log.d(TAG, "player playing -> ${player?.isPlaying}")
     }
 
     fun stopPlaying() {
-        state = State2.PAUSE
+        state_ = State2.PAUSE
         player?.pause()
     }
 }

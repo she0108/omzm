@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">O Meal Jo Meal</string>
+    <string name="app_name">오밀조밀</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_senti_map">sentiMap</string>
     <string name="title_activity_google_maps">GoogleMaps</string>

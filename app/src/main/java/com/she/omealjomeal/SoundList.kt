@@ -26,6 +26,8 @@ class SoundList : AppCompatActivity() {
         val binding by lazy { ActivitySoundListBinding.inflate(layoutInflater) }
         setContentView(binding.root)
 
+        overridePendingTransition(0, 0)
+
         val selectedPlaylistId = intent.getStringExtra("playlist")  // PlaylistList에서 선택된 playlist 전달받음 -> playlist.soundIdList에서 sound id 목록 받아오기
 
 
@@ -57,8 +59,22 @@ class SoundList : AppCompatActivity() {
             val intent = Intent(this, PostReview2::class.java)
             intent.putExtra("from", "other")
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             this.startActivity(intent)
         }
+
+        binding.imageButton10.setOnClickListener {
+            finish()
+        }
+
+        binding.imageButton6.setOnClickListener {
+            finish()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        overridePendingTransition(0, 0)
     }
 
 

@@ -138,7 +138,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:text="내가 오늘 갔던 곳은..." />
+                android:text="내가 오늘 갔던 곳은..."
+                android:textSize="16sp" />
 
             <RelativeLayout
                 android:id="@+id/layoutRes"
@@ -153,7 +154,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:text="가게 정보 입력하기" />
+                    android:text="가게 정보 입력하기"
+                    android:textSize="16dp" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/layoutResSelected"
@@ -182,7 +184,7 @@
                         android:layout_marginTop="24dp"
                         android:layout_marginEnd="16dp"
                         android:text="가게 이름"
-                        android:textSize="20sp"
+                        android:textSize="18dp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toTopOf="@+id/textResAddress"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -197,6 +199,7 @@
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="32dp"
                         android:text="가게 주소"
+                        android:textSize="16dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/imageRes"
@@ -210,7 +213,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="한 줄로 표현하면?" />
+                android:text="한 줄로 표현하면?"
+                android:textSize="16sp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -224,6 +228,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:layout_marginRight="10dp"
                     android:orientation="horizontal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageView3"
@@ -235,11 +240,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|center_vertical"
+                        android:layout_weight="1"
                         android:background="@drawable/round_blue_layout"
                         android:ems="10"
+                        android:maxLines="1"
                         android:paddingHorizontal="8dp"
                         android:paddingVertical="2dp"
-                        android:textSize="14sp" />
+                        android:textSize="16dp" />
 
                     <TextView
                         android:id="@+id/textView9"
@@ -248,7 +255,7 @@
                         android:layout_gravity="left|center_vertical"
                         android:layout_marginLeft="7dp"
                         android:text="곳이다."
-                        android:textSize="14sp" />
+                        android:textSize="16sp" />
 
                 </LinearLayout>
 
@@ -282,24 +289,24 @@
                         android:layout_gravity="left|center_vertical"
                         android:layout_marginRight="7dp"
                         android:text="이곳은"
-                        android:textSize="14sp" />
+                        android:textSize="16sp" />
 
                     <Spinner
                         android:id="@+id/spinnerReview1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|center_vertical"
-                        android:background="@drawable/round_blue_layout"
-                        android:textAlignment="center" />
+                        android:background="@drawable/round_blue_layout" />
 
                     <TextView
                         android:id="@+id/textView8"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|center_vertical"
-                        android:text="와/과 함께"
                         android:layout_marginLeft="3dp"
-                        android:textSize="14sp" />
+                        android:text="와/과 함께"
+                        android:textSize="16sp" />
+
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -317,7 +324,7 @@
                     android:layout_margin="15dp"
                     android:text="텍스트 리뷰 작성하기"
                     android:textColor="@color/black"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
 
                 <EditText
                     android:id="@+id/editTextLongReview"
@@ -331,7 +338,7 @@
                     android:hint="추가로 덧붙이고 싶은 말이 있나요? (선택)"
                     android:imeOptions="actionDone"
                     android:minLines="5"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
